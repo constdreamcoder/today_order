@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:today_order/core/common/component/custom_text_form_field.dart';
+import 'package:today_order/core/routing/router.dart';
 import 'package:today_order/core/theme/app_colors.dart';
-import 'package:today_order/presentation/login/login_screen.dart';
+import 'package:today_order/presentation/root_tab.dart';
+import 'package:today_order/presentation/user/login_screen.dart';
 
 void main() {
   runApp(
@@ -14,12 +16,12 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: router,
       theme: ThemeData(
         fontFamily: 'NotoSans',
       ),
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
     );
   }
 }
