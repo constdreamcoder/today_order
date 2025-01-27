@@ -1,13 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
+import 'package:today_order/core/routing/route_paths.dart';
+import 'package:today_order/presentation/restaurant/screen/restaurant_detail_screen.dart';
 import 'package:today_order/presentation/root_tab.dart';
 
 import '../../presentation/restaurant/component/restaurant_card.dart';
 import '../../presentation/restaurant/screen/restaurant_screen.dart';
 
 final router = GoRouter(
-  initialLocation: '/restaurant',
+  initialLocation: RoutePaths.restaurant,
   routes: [
+    GoRoute(
+      path: RoutePaths.restaurantIdPath,
+      builder: (context, state) => RestaurantDetailScreen(
+        id: state.pathParameters[RoutePaths.restaurantId]!,
+      ),
+    ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
         return RootTab(
@@ -25,10 +33,9 @@ final router = GoRouter(
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: '/restaurant',
+              path: RoutePaths.restaurant,
               builder: (context, state) {
-                return RestaurantScreen();
-                ;
+                return const RestaurantScreen();
               },
             ),
           ],
@@ -36,7 +43,7 @@ final router = GoRouter(
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: '/product',
+              path: RoutePaths.product,
               builder: (context, state) {
                 return Center(
                   child: Text('음식'),
@@ -48,7 +55,7 @@ final router = GoRouter(
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: '/order_done',
+              path: RoutePaths.orderDone,
               builder: (context, state) {
                 return Center(
                   child: Text('주문'),
@@ -60,7 +67,7 @@ final router = GoRouter(
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: '/profile',
+              path: RoutePaths.profile,
               builder: (context, state) {
                 return Center(
                   child: Text('프로필'),
