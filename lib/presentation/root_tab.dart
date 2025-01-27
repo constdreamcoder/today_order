@@ -19,7 +19,7 @@ class RootTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
-      title: '오늘의 주문',
+      title: '오늘의 딜리버리',
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: PRIMAR_COLOR,
         unselectedItemColor: BODY_TEXT_COLOR,

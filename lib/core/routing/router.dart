@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:today_order/presentation/root_tab.dart';
 
 import '../../presentation/restaurant/component/restaurant_card.dart';
+import '../../presentation/restaurant/screen/restaurant_screen.dart';
 
 final router = GoRouter(
   initialLocation: '/restaurant',
@@ -26,7 +27,7 @@ final router = GoRouter(
             GoRoute(
               path: '/restaurant',
               builder: (context, state) {
-                return RestaurantCard();
+                return RestaurantScreen();
                 ;
               },
             ),
