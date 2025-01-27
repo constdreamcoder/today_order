@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:today_order/core/common/component/custom_text_form_field.dart';
 import 'package:today_order/core/theme/app_colors.dart';
+import 'package:today_order/presentation/root_tab.dart';
 import 'package:today_order/presentation/user/login_screen.dart';
 
 void main() {
@@ -19,7 +20,7 @@ class App extends StatelessWidget {
         fontFamily: 'NotoSans',
       ),
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
+      home: RootTab(),
     );
   }
 }
