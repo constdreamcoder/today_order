@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:today_order/presentation/root_tab.dart';
 
+import '../../presentation/restaurant/component/restaurant_card.dart';
+
 final router = GoRouter(
   initialLocation: '/restaurant',
   routes: [
@@ -24,9 +26,8 @@ final router = GoRouter(
             GoRoute(
               path: '/restaurant',
               builder: (context, state) {
-                return Center(
-                  child: Text('홈'),
-                );
+                return RestaurantCard();
+                ;
               },
             ),
           ],
