@@ -1,15 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:today_order/core/routing/route_paths.dart';
+import 'package:today_order/core/view/splash_screen.dart';
 import 'package:today_order/presentation/restaurant/screen/restaurant_detail_screen.dart';
 import 'package:today_order/presentation/root_tab.dart';
+import 'package:today_order/presentation/user/login_screen.dart';
 
 import '../../presentation/restaurant/component/restaurant_card.dart';
 import '../../presentation/restaurant/screen/restaurant_screen.dart';
 
 final router = GoRouter(
-  initialLocation: RoutePaths.restaurant,
+  initialLocation: RoutePaths.splash,
   routes: [
+    GoRoute(
+      path: RoutePaths.splash,
+      builder: (context, state) => const SplashScreen(),
+    ),
+    GoRoute(
+      path: RoutePaths.login,
+      builder: (context, state) => const LoginScreen(),
+    ),
     GoRoute(
       path: RoutePaths.restaurantIdPath,
       builder: (context, state) => RestaurantDetailScreen(
