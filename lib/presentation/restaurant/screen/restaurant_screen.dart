@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:today_order/core/routing/router.dart';
+import 'package:today_order/core/routing/routes.dart';
 import 'package:today_order/presentation/restaurant/component/restaurant_card.dart';
 
 import '../../../core/routing/route_paths.dart';

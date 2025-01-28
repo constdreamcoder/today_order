@@ -1,24 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:today_order/core/common/component/custom_text_form_field.dart';
-import 'package:today_order/core/routing/router.dart';
+import 'package:today_order/core/routing/routes.dart';
 import 'package:today_order/core/theme/app_colors.dart';
 import 'package:today_order/presentation/root_tab.dart';
-import 'package:today_order/presentation/user/login_screen.dart';
+import 'package:today_order/presentation/user/screen/login_screen.dart';
+
+import 'core/routing/provider/router_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   runApp(
-    const App(),
+    const ProviderScope(
+      child: App(),
+    ),
   );
 }
 
-class App extends StatelessWidget {
+class App extends ConsumerWidget {
   const App({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(routerProvider);
+
     return MaterialApp.router(
       routerConfig: router,
       theme: ThemeData(
@@ -28,4 +35,3 @@ class App extends StatelessWidget {
     );
   }
 }
-
