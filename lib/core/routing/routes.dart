@@ -4,7 +4,7 @@ import 'package:today_order/core/routing/route_paths.dart';
 import 'package:today_order/core/view/splash_screen.dart';
 import 'package:today_order/presentation/restaurant/screen/restaurant_detail_screen.dart';
 import 'package:today_order/presentation/root_tab.dart';
-import 'package:today_order/presentation/user/login_screen.dart';
+import 'package:today_order/presentation/user/screen/login_screen.dart';
 
 import '../../presentation/restaurant/component/restaurant_card.dart';
 import '../../presentation/restaurant/screen/restaurant_screen.dart';
