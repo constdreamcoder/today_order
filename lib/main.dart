@@ -11,8 +11,8 @@ import 'core/routing/provider/router_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  diSetup();
   await dotenv.load(fileName: ".env");
+  diSetup();
   runApp(
     const ProviderScope(
       child: App(),
