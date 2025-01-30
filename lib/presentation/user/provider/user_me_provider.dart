@@ -30,7 +30,7 @@ class UserMeNotifier extends Notifier<UserModelBase?> {
   UserMeNotifier({
     required AuthRepository authRepository,
   }) : _authRepository = authRepository {
-
+    getMe();
   }
 
   @override
@@ -39,10 +39,10 @@ class UserMeNotifier extends Notifier<UserModelBase?> {
   }
 
   Future<void> getMe() async {
-
+    state = await _authRepository.getMe();
   }
 
-  Future<UserModelBase> login({
+  Future<UserModelBase?> login({
     required String email,
     required String password,
   }) async {

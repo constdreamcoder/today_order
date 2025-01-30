@@ -1,6 +1,8 @@
 import 'dart:math';
 
 import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:today_order/core/di/di_setup.dart';
 import 'package:today_order/core/utils/data_utils.dart';
 import 'package:today_order/data/data_source/remote/auth_api.dart';
 import 'package:today_order/data/data_source/remote/user_api.dart';
@@ -22,7 +24,9 @@ class AuthRepositoryImpl implements AuthRepository {
     required SecureStorageDao secureStorageDao,
   })  : _authApi = authApi,
         _userApi = userApi,
-        _secureStorageDao = secureStorageDao;
+        _secureStorageDao = secureStorageDao {
+    // getIt<FlutterSecureStorage>().deleteAll();
+  }
 
   @override
   Future<UserModelBase?> login(String email, String password) async {

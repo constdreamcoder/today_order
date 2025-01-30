@@ -30,7 +30,6 @@ class AuthNotifier extends ChangeNotifier {
   String? redirectLogic(BuildContext context, GoRouterState state) {
     // 유저 정보를 가져온다.
     final user = _ref.read(userMeProvider);
-    print(user);
 
     final loggingIn = state.matchedLocation == RoutePaths.login;
 
