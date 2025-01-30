@@ -13,4 +13,9 @@ abstract class AuthApi {
   Future<LoginResponse> login(
         @Header('authorization') String authorization
       );
+
+  @POST('/auth/token')
+  Future<LoginResponse> refreshToken(
+      @Header('authorization') String authorization
+      );
 }
