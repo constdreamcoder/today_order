@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:today_order/core/di/di_setup.dart';
-import 'package:today_order/data/data_source/local/secure_storage.dart';
+import 'package:today_order/data/data_source/local/secure_storage_dao.dart';
 import 'package:today_order/data/data_source/remote/auth_api.dart';
 import 'package:today_order/data/data_source/remote/user_api.dart';
 import 'package:today_order/data/repository_impl/auth_repository_impl.dart';
@@ -52,5 +52,9 @@ class UserMeNotifier extends Notifier<UserModelBase?> {
 
     state = response;
     return response;
+  }
+
+  Future<void> logout() async {
+    state = null;
   }
 }

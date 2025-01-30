@@ -11,7 +11,7 @@ import 'package:today_order/domain/model/user_model.dart';
 
 import '../../core/constant/constant.dart';
 import '../../domain/respository/auth_repository.dart';
-import '../data_source/local/secure_storage.dart';
+import '../data_source/local/secure_storage_dao.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthApi _authApi;

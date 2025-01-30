@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:today_order/core/di/di_setup.dart';
 import 'package:today_order/data/data_source/network/custom_interceptor.dart';
+import 'package:today_order/data/data_source/remote/auth_api.dart';
 
 import '../../../core/constant/constant.dart';
 
@@ -26,6 +27,9 @@ class CustomDioClient {
     _dio.interceptors.add(
       CustomInterceptor(
         secureStorage: getIt<FlutterSecureStorage>(),
+        authApi: AuthApi(
+          _dio,
+        ),
       ),
     );
   }
