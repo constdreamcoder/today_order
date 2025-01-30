@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:today_order/core/common/layout/default_layout.dart';
 import 'package:today_order/presentation/restaurant/component/restaurant_card.dart';
 
+import '../../../core/layout/default_layout.dart';
 import '../../product/component/product_card.dart';
 import '../../rating/component/rating_card.dart';
 

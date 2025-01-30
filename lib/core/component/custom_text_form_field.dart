@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:today_order/core/theme/app_colors.dart';
 
-class CustomTextFormFieldField extends StatelessWidget {
+class CustomTextFormField extends StatelessWidget {
   final String? hintText;
   final String? errorText;
   final bool autofocus;
   final bool obscureText;
   final ValueChanged<String>? onChanged;
 
-  const CustomTextFormFieldField({
+  const CustomTextFormField({
     super.key,
     this.hintText,
     this.autofocus = false,

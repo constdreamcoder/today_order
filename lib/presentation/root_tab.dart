@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:today_order/core/common/layout/default_layout.dart';
-import 'package:today_order/core/common/navigation_bar/custom_navigation_bar.dart';
 
+
+import '../core/layout/default_layout.dart';
 import '../core/theme/app_colors.dart';
 
 class RootTab extends StatelessWidget {

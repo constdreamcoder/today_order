@@ -1,5 +1,5 @@
-import '../model/login_response.dart';
+import '../model/user_model.dart';
 
 abstract interface class AuthRepository {
-  Future<LoginResponse> login(String email, String password);
+  Future<UserModelBase> login(String email, String password);
 }

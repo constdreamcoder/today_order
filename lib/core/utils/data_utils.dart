@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:today_order/core/common/constant/constant.dart';
+import '../constant/constant.dart';
 
 class DataUtils {
 

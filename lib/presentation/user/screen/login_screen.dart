@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:today_order/core/common/component/custom_button.dart';
-import 'package:today_order/core/common/layout/default_layout.dart';
 
-import '../../../core/common/component/custom_text_form_field.dart';
+import '../../../core/component/custom_button.dart';
+import '../../../core/component/custom_text_form_field.dart';
+import '../../../core/layout/default_layout.dart';
 import '../../../core/theme/app_colors.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -26,11 +26,11 @@ class LoginScreen extends StatelessWidget {
                   'asset/img/misc/logo.png',
                   width: MediaQuery.of(context).size.width / 3 * 2,
                 ),
-                CustomTextFormFieldField(
+                CustomTextFormField(
                   hintText: '이메일을 입력해주세요',
                   onChanged: (String value) {},
                 ),
-                CustomTextFormFieldField(
+                CustomTextFormField(
                   hintText: '비밀번호를 입력해주세요',
                   onChanged: (String value) {},
                 ),

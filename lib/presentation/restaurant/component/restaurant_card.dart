@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/common/constant/constant.dart';
+import '../../../core/constant/constant.dart';
 import '../../../core/theme/app_colors.dart';
 
 class RestaurantCard extends StatelessWidget {

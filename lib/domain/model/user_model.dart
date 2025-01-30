@@ -7,7 +7,7 @@ part 'user_model.freezed.dart';
 part 'user_model.g.dart';
 
 @freezed
-class UserModel with _$UserModel {
+class UserModel extends UserModelBase with _$UserModel {
   const factory UserModel({
     @Default('') String id,
     @Default('') String username,

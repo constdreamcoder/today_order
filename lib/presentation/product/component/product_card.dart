@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:today_order/core/common/constant/constant.dart';
 
+import '../../../core/constant/constant.dart';
 import '../../../core/theme/app_colors.dart';
 
 class ProductCard extends StatelessWidget {
