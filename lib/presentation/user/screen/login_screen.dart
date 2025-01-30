@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:today_order/core/common/component/custom_button.dart';
-import 'package:today_order/core/common/layout/default_layout.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:today_order/presentation/user/provider/user_me_provider.dart';
 
-import '../../../core/common/component/custom_text_form_field.dart';
+import '../../../core/component/custom_button.dart';
+import '../../../core/component/custom_text_form_field.dart';
+import '../../../core/layout/default_layout.dart';
 import '../../../core/theme/app_colors.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends ConsumerState<LoginScreen> {
+  String email = '';
+  String password = '';
 
   @override
   Widget build(BuildContext context) {
@@ -26,23 +36,32 @@ class LoginScreen extends StatelessWidget {
                   'asset/img/misc/logo.png',
                   width: MediaQuery.of(context).size.width / 3 * 2,
                 ),
-                CustomTextFormFieldField(
+                CustomTextFormField(
                   hintText: '이메일을 입력해주세요',
-                  onChanged: (String value) {},
+                  onChanged: (String value) {
+                    email = value;
+                  },
                 ),
-                CustomTextFormFieldField(
+                CustomTextFormField(
                   hintText: '비밀번호를 입력해주세요',
-                  onChanged: (String value) {},
+                  onChanged: (String value) {
+                    password = value;
+                  },
                 ),
                 const SizedBox(height: 16),
                 CustomButton(
-                  onPressed: (){},
+                  onPressed: () {
+                    ref.read(userMeProvider.notifier).login(
+                          email: email,
+                          password: password,
+                        );
+                  },
                   foregroundColor: Colors.white,
                   backgroundColor: PRIMAR_COLOR,
                   child: const Text('로그인'),
                 ),
                 CustomButton(
-                  onPressed: (){},
+                  onPressed: () {},
                   child: const Text('회원가입'),
                 ),
               ],

@@ -1,3 +1,22 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../../core/utils/data_utils.dart';
+
+part 'user_model.freezed.dart';
+
+part 'user_model.g.dart';
+
+@freezed
+class UserModel extends UserModelBase with _$UserModel {
+  const factory UserModel({
+    @Default('') String id,
+    @Default('') String username,
+    @Default('') @JsonKey(fromJson: DataUtils.pathToUrl) String imageUrl,
+  }) = _UserModel;
+
+  factory UserModel.fromJson(Map<String, Object?> json) => _$UserModelFromJson(json);
+}
+
 abstract interface class UserModelBase {}
 
 class UserModelError extends UserModelBase {
@@ -7,15 +26,3 @@ class UserModelError extends UserModelBase {
 }
 
 class UserModelLoading extends UserModelBase {}
-
-class UserModel extends UserModelBase {
-  final String id;
-  final String username;
-  final String imageUrl;
-
-  UserModel({
-    required this.id,
-    required this.username,
-    required this.imageUrl,
-  });
-}

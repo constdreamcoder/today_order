@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:today_order/core/common/constant/constant.dart';
 import 'package:today_order/core/theme/app_colors.dart';
+
+import '../../../core/constant/constant.dart';
 
 class RatingCard extends StatelessWidget {
   const RatingCard({super.key});
