@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:today_order/core/routing/route_paths.dart';
 import 'package:today_order/core/view/splash_screen.dart';
@@ -7,6 +8,8 @@ import 'package:today_order/presentation/root_tab.dart';
 import 'package:today_order/presentation/user/screen/login_screen.dart';
 
 import '../../presentation/restaurant/screen/restaurant_screen.dart';
+
+Ref? sharedRef;
 
 List<RouteBase> get routes =>  [
   GoRoute(
