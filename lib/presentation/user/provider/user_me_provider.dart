@@ -29,11 +29,17 @@ class UserMeNotifier extends Notifier<UserModelBase?> {
 
   UserMeNotifier({
     required AuthRepository authRepository,
-  }) : _authRepository = authRepository;
+  }) : _authRepository = authRepository {
+
+  }
 
   @override
   UserModelBase? build() {
     return UserModelLoading();
+  }
+
+  Future<void> getMe() async {
+
   }
 
   Future<UserModelBase> login({

@@ -9,7 +9,7 @@ abstract class AuthApi {
 
   factory AuthApi(Dio dio, {String baseUrl}) = _AuthApi;
 
-  @GET('/auth/login')
+  @POST('/auth/login')
   Future<LoginResponse> login(
         @Header('authorization') String authorization
       );

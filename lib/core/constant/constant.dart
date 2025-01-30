@@ -9,6 +9,6 @@ class Constant {
   static final String ACCESS_TOKEN_KEY = dotenv.get('ACCESS_TOKEN_KEY');
   static final String REFRESH_TOKEN_KEY = dotenv.get('REFRESH_TOKEN_KEY');
 
-  static final String baseUrl =
+  static String baseUrl =
       Platform.isIOS ? dotenv.get('simulatorUrl') : dotenv.get('emulatorUrl');
 }

@@ -9,11 +9,17 @@ class SecureStorageDao {
     required FlutterSecureStorage storage,
   }) : _storage = storage;
 
-  Future<void> writeTokens({
-    required String accessToken,
-    required String refreshToken,
+  Future<void> writeValue<T>({
+    required String key,
+    required String value,
   }) async {
-    await _storage.write(key: Constant.ACCESS_TOKEN_KEY, value: accessToken);
-    await _storage.write(key: Constant.REFRESH_TOKEN_KEY, value: refreshToken);
+    await _storage.write(key: key, value: value);
+  }
+
+  Future<String> getValue({
+    required String key,
+  }) async {
+    final value = await _storage.read(key: key);
+    return value!;
   }
 }

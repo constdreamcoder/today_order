@@ -7,6 +7,7 @@ import 'package:today_order/data/data_source/remote/user_api.dart';
 import 'package:today_order/domain/model/login_response.dart';
 import 'package:today_order/domain/model/user_model.dart';
 
+import '../../core/constant/constant.dart';
 import '../../domain/respository/auth_repository.dart';
 import '../data_source/local/secure_storage.dart';
 
@@ -30,10 +31,8 @@ class AuthRepositoryImpl implements AuthRepository {
       final authorization = 'Basic $serialized';
       final response = await _authApi.login(authorization);
 
-      await _secureStorageDao.writeTokens(
-        accessToken: response.accessToken,
-        refreshToken: response.refreshToken,
-      );
+      await _secureStorageDao.writeValue(key: Constant.ACCESS_TOKEN_KEY, value: response.accessToken);
+      await _secureStorageDao.writeValue(key: Constant.REFRESH_TOKEN_KEY, value: response.refreshToken);
 
       final userResponse = await _userApi.getMe();
 
