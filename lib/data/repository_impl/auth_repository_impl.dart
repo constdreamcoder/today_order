@@ -25,7 +25,7 @@ class AuthRepositoryImpl implements AuthRepository {
         _secureStorageDao = secureStorageDao;
 
   @override
-  Future<UserModelBase> login(String email, String password) async {
+  Future<UserModelBase?> login(String email, String password) async {
     try {
       final serialized = DataUtils.plainToBase64('$email:$password');
       final authorization = 'Basic $serialized';
@@ -41,5 +41,19 @@ class AuthRepositoryImpl implements AuthRepository {
       print(e);
       return UserModelError(message: '로그인에 실패했습니다.');
     }
+  }
+
+  @override
+  Future<UserModelBase?> getMe() async {
+    final refreshToken = await _secureStorageDao.getValue(key: Constant.REFRESH_TOKEN_KEY);
+    final accessToken = await _secureStorageDao.getValue(key: Constant.ACCESS_TOKEN_KEY) ;
+
+    if(refreshToken == null || accessToken == null) {
+      return null;
+    }
+
+    final response = await _userApi.getMe();
+
+    return response;
   }
 }

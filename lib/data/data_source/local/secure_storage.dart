@@ -16,10 +16,10 @@ class SecureStorageDao {
     await _storage.write(key: key, value: value);
   }
 
-  Future<String> getValue({
+  Future<String?> getValue({
     required String key,
   }) async {
     final value = await _storage.read(key: key);
-    return value!;
+    return value;
   }
 }
