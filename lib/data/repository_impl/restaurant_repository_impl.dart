@@ -14,9 +14,8 @@ class RestaurantRepositoryImpl implements RestaurantRepository {
 
   @override
   Future<CursorPagination<RestaurantModel>> paginate({
-    String? after,
+    PaginationParams? paginationParams,
   }) async {
-    final paginationParams = PaginationParams(after: after);
     return await _restaurantApi.paginate(paginationParams: paginationParams);
   }
 }

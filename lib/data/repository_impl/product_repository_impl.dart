@@ -13,9 +13,8 @@ class ProductRepositoryImpl implements ProductRepository {
 
   @override
   Future<CursorPagination<ProductModel>> paginate({
-    String? after,
+    PaginationParams? paginationParams,
   }) async {
-    final paginationParams = PaginationParams(after: after);
     return await _productApi.paginate(
       paginationParams: paginationParams,
     );
