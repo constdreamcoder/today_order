@@ -12,7 +12,7 @@ part 'product_api.g.dart';
 abstract class ProductApi {
   factory ProductApi(Dio dio, {String baseUrl}) = _ProductApi;
 
-  @GET('/')
+  @GET('/product')
   @Headers({
     'accessToken': 'true',
   })

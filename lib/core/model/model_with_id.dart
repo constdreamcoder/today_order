@@ -1,7 +1,7 @@
-abstract class IModelWidthId {
+abstract class IModelWithId {
   final String id;
 
-  IModelWidthId({
+  IModelWithId({
     required this.id,
   });
 }

@@ -7,7 +7,7 @@ import '../../core/utils/data_utils.dart';
 part 'product_model.g.dart';
 
 @JsonSerializable()
-class ProductModel implements IModelWidthId {
+class ProductModel implements IModelWithId {
   final String id;
   final RestaurantModel restaurant;
   final String name;

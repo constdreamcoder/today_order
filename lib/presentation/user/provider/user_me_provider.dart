@@ -4,8 +4,10 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:today_order/core/di/di_setup.dart';
 import 'package:today_order/data/data_source/local/secure_storage_dao.dart';
 import 'package:today_order/data/data_source/remote/auth_api.dart';
+import 'package:today_order/data/data_source/remote/product_api.dart';
 import 'package:today_order/data/data_source/remote/user_api.dart';
 import 'package:today_order/data/repository_impl/auth_repository_impl.dart';
+import 'package:today_order/data/repository_impl/product_repository_impl.dart';
 import 'package:today_order/domain/model/user_model.dart';
 import 'package:today_order/domain/respository/auth_repository.dart';
 

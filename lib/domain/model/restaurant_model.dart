@@ -6,13 +6,13 @@ import '../../core/utils/data_utils.dart';
 part 'restaurant_model.g.dart';
 
 enum RestaurantPriceRange {
-  expansive,
+  expensive,
   medium,
   cheap,
 }
 
 @JsonSerializable()
-class RestaurantModel implements IModelWidthId {
+class RestaurantModel implements IModelWithId {
   final String id;
   final String name;
   @JsonKey(fromJson: DataUtils.pathToUrl)
@@ -37,8 +37,8 @@ class RestaurantModel implements IModelWidthId {
   });
 
   factory RestaurantModel.fromJson(Map<String, dynamic> json) {
-      return _$RestaurantModelFromJson(json);
-    }
+    return _$RestaurantModelFromJson(json);
+  }
 
   Map<String, dynamic> toJson() => _$RestaurantModelToJson(this);
 }
