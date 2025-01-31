@@ -1,12 +1,13 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:today_order/domain/model/restaurant_model.dart';
 
+import '../../core/model/model_with_id.dart';
 import '../../core/utils/data_utils.dart';
 
 part 'product_model.g.dart';
 
 @JsonSerializable()
-class ProductModel {
+class ProductModel implements IModelWidthId {
   final String id;
   final RestaurantModel restaurant;
   final String name;
