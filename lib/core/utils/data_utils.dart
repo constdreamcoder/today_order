@@ -15,8 +15,4 @@ class DataUtils {
 
     return encoded;
   }
-
-  static RestaurantPriceRange stringToRestaurantPriceRange(String value) {
-    return RestaurantPriceRange.values.firstWhere((e) => e.name == value);
-  }
 }
