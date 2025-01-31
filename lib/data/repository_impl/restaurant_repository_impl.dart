@@ -21,9 +21,9 @@ class RestaurantRepositoryImpl implements RestaurantRepository {
   }
 
   @override
-  Future<RestaurantDetailModel> getDetail({
-    required String rid,
+  Future<RestaurantDetailModel> getRestaurantDetail({
+    required String id,
   }) async {
-    return await _restaurantApi.getDetail(rid: rid);
+    return await _restaurantApi.getDetail(id: id);
   }
 }

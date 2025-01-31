@@ -5,7 +5,7 @@ import '../../core/respository/base_pagination_repository.dart';
 
 abstract interface class RestaurantRepository
     implements IBasePaginationRepository<RestaurantModel> {
-  Future<RestaurantDetailModel> getDetail({
-    required String rid,
+  Future<RestaurantDetailModel> getRestaurantDetail({
+    required String id,
   });
 }

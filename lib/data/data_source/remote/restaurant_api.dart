@@ -22,11 +22,11 @@ abstract class RestaurantApi {
     @Queries() PaginationParams? paginationParams = const PaginationParams(),
   });
 
-  @GET('/restaurant/{rid}')
+  @GET('/restaurant/{id}')
   @Headers({
     'accessToken': 'true',
   })
   Future<RestaurantDetailModel> getDetail({
-    @Path() required String rid,
+    @Path() required String id,
   });
 }
