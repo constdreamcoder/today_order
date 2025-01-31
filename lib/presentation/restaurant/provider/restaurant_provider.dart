@@ -21,9 +21,7 @@ class RestaurantNotifier extends Notifier<CursorPaginationBase> {
 
   RestaurantNotifier({
     required this.repository,
-  }) {
-    paginate();
-  }
+  }) {}
 
   @override
   CursorPaginationBase build() {

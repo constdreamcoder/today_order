@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 
 import '../../../core/constant/constant.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../domain/model/restaurant_model.dart';
 
 class RestaurantCard extends StatelessWidget {
   final bool isFromDetail;
+  final RestaurantModel? model;
 
   const RestaurantCard({
     super.key,
     this.isFromDetail = false,
+    this.model,
   });
 
   @override
@@ -18,7 +21,7 @@ class RestaurantCard extends StatelessWidget {
         ClipRRect(
           borderRadius: BorderRadius.circular(isFromDetail ? 0 : 12),
           child: Image.network(
-            Constant.tempImageURL,
+            model?.thumbUrl ?? Constant.tempImageURL,
             fit: BoxFit.cover,
           ),
         ),
@@ -29,7 +32,7 @@ class RestaurantCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                '불타는 떡볶이',
+                model?.name ?? '',
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w500,
@@ -37,7 +40,7 @@ class RestaurantCard extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                '떡볶이 · 치즈 · 매운맛',
+                model?.tags.join(' · ') ?? '떡볶이 · 치즈 · 매운맛',
                 style: const TextStyle(
                   color: BODY_TEXT_COLOR,
                   fontSize: 14,
@@ -48,25 +51,25 @@ class RestaurantCard extends StatelessWidget {
                 children: [
                   _IconText(
                     icon: Icons.star,
-                    label: '4.51',
+                    label: model?.ratings.toString() ?? '',
                   ),
                   renderDot(),
                   _IconText(
                     icon: Icons.receipt,
-                    label: '100',
+                    label: model?.ratingsCount.toString() ?? '',
                   ),
                   renderDot(),
                   _IconText(
                     icon: Icons.timeline_outlined,
-                    label: '15 분',
+                    label: '${model?.deliveryTime ?? 0} 분',
                   ),
                   renderDot(),
                   _IconText(
                     icon: Icons.monetization_on,
-                    label: '2000',
+                    label: model?.deliveryFee == 0 ? '무료' : model?.deliveryFee.toString() ?? '',
                   ),
                 ],
-              )
+              ),
             ],
           ),
         )
