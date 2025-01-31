@@ -5,9 +5,11 @@ import 'package:today_order/core/di/di_setup.dart';
 import 'package:today_order/data/data_source/local/secure_storage_dao.dart';
 import 'package:today_order/data/data_source/remote/auth_api.dart';
 import 'package:today_order/data/data_source/remote/product_api.dart';
+import 'package:today_order/data/data_source/remote/restaurant_api.dart';
 import 'package:today_order/data/data_source/remote/user_api.dart';
 import 'package:today_order/data/repository_impl/auth_repository_impl.dart';
 import 'package:today_order/data/repository_impl/product_repository_impl.dart';
+import 'package:today_order/data/repository_impl/restaurant_repository_impl.dart';
 import 'package:today_order/domain/model/user_model.dart';
 import 'package:today_order/domain/respository/auth_repository.dart';
 
@@ -42,6 +44,10 @@ class UserMeNotifier extends Notifier<UserModelBase?> {
 
   Future<void> getMe() async {
     state = await _authRepository.getMe();
+
+    final restaurantApi = RestaurantApi(getIt<Dio>());
+    final response = await RestaurantRepositoryImpl(restaurantApi: restaurantApi).paginate();
+    print(response);
   }
 
   Future<UserModelBase?> login({
