@@ -44,10 +44,6 @@ class UserMeNotifier extends Notifier<UserModelBase?> {
 
   Future<void> getMe() async {
     state = await _authRepository.getMe();
-
-    final restaurantApi = RestaurantApi(getIt<Dio>());
-    final response = await RestaurantRepositoryImpl(restaurantApi: restaurantApi).paginate();
-    print(response);
   }
 
   Future<UserModelBase?> login({
