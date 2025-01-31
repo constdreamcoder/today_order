@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:today_order/core/component/custom_button.dart';
 import 'package:today_order/core/model/cursor_pagination_model.dart';
 import 'package:today_order/core/routing/routes.dart';
+import 'package:today_order/core/view/cursor_pagination_loading_circle.dart';
 import 'package:today_order/domain/model/restaurant_model.dart';
 import 'package:today_order/presentation/restaurant/component/restaurant_card.dart';
 import 'package:today_order/presentation/restaurant/provider/restaurant_provider.dart';
@@ -18,6 +19,7 @@ class RestaurantScreen extends ConsumerStatefulWidget {
 }
 
 class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
+  final ScrollController controller = ScrollController();
 
   @override
   void initState() {
@@ -25,11 +27,28 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
     Future.microtask(() {
       ref.read(restaurantProvider.notifier).paginate();
     });
+
+    controller.addListener(listener);
+  }
+
+  void listener() {
+    final x = ref.read(restaurantProvider.notifier);
+    if (controller.offset > controller.position.maxScrollExtent - 300) {
+      ref.read(restaurantProvider.notifier).paginate(fetchMore: true);
+    }
+  }
+
+  @override
+  void dispose() {
+    controller.removeListener(listener);
+    controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(restaurantProvider);
+    print(state);
 
     if (state is CursorPaginationLoading) {
       return const Center(
@@ -50,12 +69,10 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
           CustomButton(
             onPressed: () {
               ref.read(restaurantProvider.notifier).paginate(
-                forceRefetch: true,
-              );
+                    forceRefetch: true,
+                  );
             },
-            child: const Text(
-              '다시시도'
-            ),
+            child: const Text('다시시도'),
           ),
         ],
       );
@@ -66,20 +83,29 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: ListView.separated(
+        controller: controller,
+        itemCount: cp.data.length + 1,
         itemBuilder: (context, index) {
-          return const SizedBox(height: 16);
-        },
-        separatorBuilder: (context, index) {
+          if (index == state.data.length) {
+            return CursorPaginationLoadingCircle(
+              state: cp,
+            );
+          }
+
+          final restaurant = cp.data[index];
+
           return GestureDetector(
             onTap: () {
               context.push(
-                '${RoutePaths.restaurant}/12341234',
+                '${RoutePaths.restaurant}/${restaurant.id}',
               );
             },
-            child: RestaurantCard(model: state.data[index]),
+            child: RestaurantCard(model: restaurant),
           );
         },
-        itemCount: state.data.length,
+        separatorBuilder: (context, index) {
+          return const SizedBox(height: 16);
+        },
       ),
     );
   }
