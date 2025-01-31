@@ -10,7 +10,8 @@ import 'package:today_order/domain/model/restaurant_model.dart';
 import '../../../core/respository/base_pagination_repository.dart';
 import '../../../domain/respository/restaurant_repository.dart';
 
-final restaurantProvider = NotifierProvider<RestaurantNotifier, CursorPaginationBase>(() {
+final restaurantProvider =
+    NotifierProvider<RestaurantNotifier, CursorPaginationBase>(() {
   final restaurantApi = RestaurantApi(getIt<Dio>());
   final repository = RestaurantRepositoryImpl(restaurantApi: restaurantApi);
   return RestaurantNotifier(repository: repository);
@@ -26,6 +27,25 @@ class RestaurantNotifier extends Notifier<CursorPaginationBase> {
   @override
   CursorPaginationBase build() {
     return CursorPaginationLoading();
+  }
+
+  void  getDetail({
+    required String id,
+  }) async {
+    // 만약 아직 데이터가 하나도 없는 상태라면
+    // 데이터를 가져오는 시도를 한다.
+    if (state is! CursorPagination) {
+      await this.paginate();
+    }
+
+    // state가 CursorPagination이 아닐 때 그냥 리턴
+    if (state is! CursorPagination) {
+      return;
+    }
+
+    final pState = state as CursorPagination;
+
+    final response = await repository.getRestaurantDetail(id: id);
   }
 
   Future<void> paginate({
@@ -81,7 +101,8 @@ class RestaurantNotifier extends Notifier<CursorPaginationBase> {
             meta: pState.meta,
             data: pState.data,
           );
-        } else { // 나머지 상황
+        } else {
+          // 나머지 상황
           state = CursorPaginationLoading();
         }
       }

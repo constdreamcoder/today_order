@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:today_order/domain/model/restaurant_detail_model.dart';
 import 'package:today_order/presentation/restaurant/component/restaurant_card.dart';
+import 'package:today_order/presentation/restaurant/provider/restaurant_detail_provider.dart';
+import 'package:today_order/presentation/restaurant/provider/restaurant_provider.dart';
 
 import '../../../core/layout/default_layout.dart';
+import '../../../domain/model/restaurant_model.dart';
 import '../../product/component/product_card.dart';
 import '../../rating/component/rating_card.dart';
 
-class RestaurantDetailScreen extends StatelessWidget {
+class RestaurantDetailScreen extends ConsumerStatefulWidget {
   final String id;
 
   const RestaurantDetailScreen({
@@ -14,24 +19,56 @@ class RestaurantDetailScreen extends StatelessWidget {
   });
 
   @override
+  ConsumerState<RestaurantDetailScreen> createState() =>
+      _RestaurantDetailScreenState();
+}
+
+class _RestaurantDetailScreenState
+    extends ConsumerState<RestaurantDetailScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    ref.read(restaurantProvider.notifier).getDetail(id: widget.id);
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final state = ref.watch(restaurantDetailProvider(widget.id));
+
+    if (state == null) {
+      return const DefaultLayout(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
     return DefaultLayout(
-      title: '불타타는 떡볶이',
+      title: state.name,
       body: CustomScrollView(
         slivers: [
-          renderTop(),
-          renderLabel(),
-          renderProducts(),
-          renderRatings(),
+          renderTop(
+            model: state,
+          ),
+
+          // if (state is! RestaurantDetailModel)
+          if (state is RestaurantDetailModel) renderLabel(),
+          if (state is RestaurantDetailModel)
+            renderProducts(products: state.products),
+          // renderRatings(),
         ],
       ),
     );
   }
 
-  SliverToBoxAdapter renderTop() {
+  SliverToBoxAdapter renderTop({
+    required RestaurantModel model,
+  }) {
     return SliverToBoxAdapter(
       child: RestaurantCard(
         isFromDetail: true,
+        model: model,
       ),
     );
   }
@@ -51,18 +88,21 @@ class RestaurantDetailScreen extends StatelessWidget {
     );
   }
 
-  SliverPadding renderProducts() {
+  SliverPadding renderProducts({
+    required List<RestaurantProductModel> products,
+}) {
     return SliverPadding(
-      padding: EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
-          childCount: 10,
+          childCount: products.length,
           (context, index) {
+            final model = products[index];
             return InkWell(
               onTap: () {},
               child: Padding(
                 padding: const EdgeInsets.only(top: 16),
-                child: ProductCard(),
+                child: ProductCard(model: model),
               ),
             );
           },
@@ -79,7 +119,7 @@ class RestaurantDetailScreen extends StatelessWidget {
           childCount: 10,
           (context, index) {
             return InkWell(
-              onTap: (){},
+              onTap: () {},
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 16),
                 child: RatingCard(),
