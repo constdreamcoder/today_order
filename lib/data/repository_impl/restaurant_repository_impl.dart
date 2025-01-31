@@ -1,5 +1,6 @@
 import 'package:today_order/core/model/cursor_pagination_model.dart';
 import 'package:today_order/data/data_source/remote/restaurant_api.dart';
+import 'package:today_order/domain/model/restaurant_detail_model.dart';
 import 'package:today_order/domain/model/restaurant_model.dart';
 import 'package:today_order/domain/respository/restaurant_repository.dart';
 
@@ -17,5 +18,12 @@ class RestaurantRepositoryImpl implements RestaurantRepository {
     PaginationParams? paginationParams,
   }) async {
     return await _restaurantApi.paginate(paginationParams: paginationParams);
+  }
+
+  @override
+  Future<RestaurantDetailModel> getDetail({
+    required String rid,
+  }) async {
+    return await _restaurantApi.getDetail(rid: rid);
   }
 }
