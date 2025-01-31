@@ -34,6 +34,7 @@ class RestaurantNotifier extends Notifier<CursorPaginationBase> {
     bool forceRefetch = false,
   }) async {
     try {
+      // hasMore = false인 경우,
       // 기존 상태에서 이미 다음 데이터가 없다는 값을 들고 있다면
       if (state is CursorPagination && !forceRefetch) {
         final pState = state as CursorPagination;
@@ -72,7 +73,7 @@ class RestaurantNotifier extends Notifier<CursorPaginationBase> {
         // 데이터를 처음부터 가져오는 상황
 
         // 만약 기존 데이터가 있는 상황이라면
-        // 기존 데이터를 보존한채롤 Fetch (API 요청)를 진행
+        // 기존 데이터를 보존한 채 Fetch (API 요청)를 진행
         if (state is CursorPagination && !forceRefetch) {
           final pState = state as CursorPagination<RestaurantModel>;
 

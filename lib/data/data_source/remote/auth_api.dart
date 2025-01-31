@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart' hide Headers;
 import 'package:retrofit/retrofit.dart';
 import 'package:today_order/domain/model/login_response.dart';
+import 'package:today_order/domain/model/refreshed_token_response.dart';
 
 part 'auth_api.g.dart';
 
@@ -18,7 +19,5 @@ abstract class AuthApi {
   @Headers({
     'refreshToken': 'true',
   })
-  Future<LoginResponse> refreshToken(
-      @Header('authorization') String authorization
-      );
+  Future<RefreshedTokenResponse> refreshToken();
 }

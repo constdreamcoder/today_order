@@ -27,9 +27,7 @@ class CustomDioClient {
     _dio.interceptors.add(
       CustomInterceptor(
         secureStorage: getIt<FlutterSecureStorage>(),
-        authApi: AuthApi(
-          _dio,
-        ),
+        authApi: AuthApi(_dio),
       ),
     );
   }

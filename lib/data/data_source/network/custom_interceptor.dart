@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart'
+    hide Options;
 import 'package:today_order/core/routing/provider/router_provider.dart';
 import 'package:today_order/data/data_source/remote/auth_api.dart';
 import 'package:today_order/presentation/user/provider/user_me_provider.dart';
@@ -69,15 +70,19 @@ class CustomInterceptor extends Interceptor {
 
     if (isStatus401 && !isPathRefresh) {
       try {
-        final loginResponse = await _authApi.refreshToken('Bearer $refreshToken');
+        final refreshedTokenResponse = await _authApi.refreshToken();
+        final accessToken = refreshedTokenResponse.accessToken;
 
         final options = err.requestOptions;
 
         options.headers.addAll({
-          'authorization': 'Bearer ${loginResponse.accessToken}',
+          'authorization': 'Bearer $accessToken',
         });
 
-        await _secureStorage.write(key: Constant.REFRESH_TOKEN_KEY, value: loginResponse.accessToken);
+        await _secureStorage.write(
+          key: Constant.ACCESS_TOKEN_KEY,
+          value: accessToken,
+        );
 
         final dio = Dio(
           BaseOptions(
@@ -90,9 +95,15 @@ class CustomInterceptor extends Interceptor {
         final retriedResponse = await dio.fetch(options);
 
         return handler.resolve(retriedResponse);
-      } on DioException catch (e) {
-
-        await _secureStorage.deleteAll();
+      } on DioException catch (e, stack) {
+        print(e);
+        print(stack);
+        await Future.wait(
+          [
+            _secureStorage.delete(key: Constant.REFRESH_TOKEN_KEY),
+            _secureStorage.delete(key: Constant.ACCESS_TOKEN_KEY),
+          ],
+        );
         sharedRef?.read(userMeProvider.notifier).logout();
 
         return handler.reject(e);
