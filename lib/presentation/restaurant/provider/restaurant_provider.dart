@@ -12,12 +12,12 @@ import '../../../domain/respository/restaurant_repository.dart';
 
 final restaurantProvider = NotifierProvider<RestaurantNotifier, CursorPaginationBase>(() {
   final restaurantApi = RestaurantApi(getIt<Dio>());
-  RestaurantRepository repository =  RestaurantRepositoryImpl(restaurantApi: restaurantApi);
+  final repository = RestaurantRepositoryImpl(restaurantApi: restaurantApi);
   return RestaurantNotifier(repository: repository);
 });
 
 class RestaurantNotifier extends Notifier<CursorPaginationBase> {
-  final IBasePaginationRepository repository;
+  final RestaurantRepository repository;
 
   RestaurantNotifier({
     required this.repository,
@@ -92,7 +92,12 @@ class RestaurantNotifier extends Notifier<CursorPaginationBase> {
 
       if (state is CursorPaginationFetchingMore) {
         final pState = state as CursorPaginationFetchingMore<RestaurantModel>;
-
+        final newState = response.copyWith(
+          data: [
+            ...pState.data,
+            ...response.data,
+          ],
+        );
         state = response.copyWith(
           data: [
             ...pState.data,
