@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import '../../domain/model/restaurant_model.dart';
 import '../constant/constant.dart';
 
 class DataUtils {
@@ -13,5 +14,9 @@ class DataUtils {
     String encoded = stringToBase64.encode(plain);
 
     return encoded;
+  }
+
+  static RestaurantPriceRange stringToRestaurantPriceRange(String value) {
+    return RestaurantPriceRange.values.firstWhere((e) => e.name == value);
   }
 }
