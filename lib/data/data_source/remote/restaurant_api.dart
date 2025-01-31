@@ -13,7 +13,7 @@ part 'restaurant_api.g.dart';
 abstract class RestaurantApi {
   factory RestaurantApi(Dio dio, {String baseUrl}) = _RestaurantApi;
 
-  @GET('/product')
+  @GET('/restaurant')
   @Headers({
     'accessToken': 'true',
   })
