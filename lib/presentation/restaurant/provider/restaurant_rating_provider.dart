@@ -21,7 +21,7 @@ class RestaurantRatingNotifier extends Notifier<CursorPaginationBase> {
 
   RestaurantRatingNotifier({
     required this.repository,
-  }) {}
+  });
 
   @override
   CursorPaginationBase build() {
@@ -79,7 +79,7 @@ class RestaurantRatingNotifier extends Notifier<CursorPaginationBase> {
         if (state is CursorPagination && !forceRefetch) {
           final pState = state as CursorPagination<RatingModel>;
 
-          state = CursorPaginationRefetching(
+          state = CursorPaginationRefetching<RatingModel>(
             meta: pState.meta,
             data: pState.data,
           );

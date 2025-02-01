@@ -32,7 +32,6 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
   }
 
   void listener() {
-    final x = ref.read(restaurantProvider.notifier);
     if (controller.offset > controller.position.maxScrollExtent - 300) {
       ref.read(restaurantProvider.notifier).paginate(fetchMore: true);
     }
@@ -48,7 +47,7 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(restaurantProvider);
-    print(state);
+    // print(state);
 
     if (state is CursorPaginationLoading) {
       return const Center(

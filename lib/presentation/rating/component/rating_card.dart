@@ -2,31 +2,52 @@ import 'package:flutter/material.dart';
 import 'package:today_order/core/theme/app_colors.dart';
 
 import '../../../core/constant/constant.dart';
+import '../../../domain/model/rating_model.dart';
 
 class RatingCard extends StatelessWidget {
-  const RatingCard({super.key});
+  final RatingModel model;
+
+  const RatingCard({
+    super.key,
+    required this.model,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        _Header(),
+        _Header(
+          email: model.user.username,
+          ratings: model.rating,
+        ),
         const SizedBox(height: 8),
-        _Body(),
-        Padding(
-          padding: EdgeInsets.only(top: 8),
-          child: SizedBox(
-            height: 100,
-            child: _Images(),
-          ),
-        )
+        _Body(
+          content: model.content,
+        ),
+        if (model.imgUrls.length > 0)
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: SizedBox(
+              height: 100,
+              child: _Images(
+                images: model.imgUrls,
+              ),
+            ),
+          )
       ],
     );
   }
 }
 
 class _Header extends StatelessWidget {
-  const _Header({super.key});
+  final String email;
+  final int ratings;
+
+  const _Header({
+    super.key,
+    required this.email,
+    required this.ratings,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +60,9 @@ class _Header extends StatelessWidget {
         const SizedBox(width: 8),
         Expanded(
           child: Text(
-            'test@gmail.com',
+            email,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 14,
               color: Colors.black,
               fontWeight: FontWeight.w500,
@@ -51,7 +72,7 @@ class _Header extends StatelessWidget {
         ...List.generate(
           5,
           (index) => Icon(
-            Icons.star,
+            index < ratings ? Icons.star : Icons.star_border_outlined,
             color: PRIMAR_COLOR,
           ),
         ),
@@ -61,7 +82,12 @@ class _Header extends StatelessWidget {
 }
 
 class _Body extends StatelessWidget {
-  const _Body({super.key});
+  final String content;
+
+  const _Body({
+    super.key,
+    required this.content,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +95,7 @@ class _Body extends StatelessWidget {
       children: [
         Flexible(
           child: Text(
-            '안녕하세요.',
+            content,
             style: const TextStyle(
               color: BODY_TEXT_COLOR,
               fontSize: 14,
@@ -82,20 +108,27 @@ class _Body extends StatelessWidget {
 }
 
 class _Images extends StatelessWidget {
-  const _Images({super.key});
+  final List<String> images;
+
+  const _Images({
+    super.key,
+    required this.images,
+  });
 
   @override
   Widget build(BuildContext context) {
     return ListView(
       scrollDirection: Axis.horizontal,
       children: List.generate(
-        8,
+        images.length,
         (index) {
+          final image = images[index];
           return Padding(
-            padding: EdgeInsets.only(right: index == (8 - 1) ? 0 : 16),
+            padding:
+                EdgeInsets.only(right: index == (images.length - 1) ? 0 : 16),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: Image.network(Constant.tempImageURL),
+              child: Image.network(image),
             ),
           );
         },
