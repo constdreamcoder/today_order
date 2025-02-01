@@ -29,7 +29,7 @@ class RestaurantNotifier extends Notifier<CursorPaginationBase> {
     return CursorPaginationLoading();
   }
 
-  void  getDetail({
+  void getDetail({
     required String id,
   }) async {
     // 만약 아직 데이터가 하나도 없는 상태라면
@@ -46,6 +46,23 @@ class RestaurantNotifier extends Notifier<CursorPaginationBase> {
     final pState = state as CursorPagination;
 
     final response = await repository.getRestaurantDetail(id: id);
+
+    if (pState.data.where((e) => e.id == id).isEmpty) {
+      state = pState.copyWith(
+        data: <RestaurantModel>[
+          ...pState.data,
+          response,
+        ],
+      );
+    } else {
+      state = pState.copyWith(
+        data: pState.data
+            .map<RestaurantModel>(
+              (e) => e.id == id ? response : e,
+            )
+            .toList(),
+      );
+    }
   }
 
   Future<void> paginate({
