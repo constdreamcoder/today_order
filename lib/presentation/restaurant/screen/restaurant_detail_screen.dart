@@ -40,6 +40,24 @@ class _RestaurantDetailScreenState
     });
 
     ref.read(restaurantProvider.notifier).getDetail(id: widget.id);
+
+    controller.addListener(listener);
+  }
+
+  void listener() {
+    if (controller.offset > controller.position.maxScrollExtent - 300) {
+      ref.read(restaurantRatingProvider.notifier).paginate(
+        id: widget.id,
+        fetchMore: true,
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    controller.removeListener(listener);
+    controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -58,11 +76,11 @@ class _RestaurantDetailScreenState
     return DefaultLayout(
       title: state.name,
       body: CustomScrollView(
+        controller: controller,
         slivers: [
           renderTop(
             model: state,
           ),
-
           // if (state is! RestaurantDetailModel)
           if (state is RestaurantDetailModel) renderLabel(),
           if (state is RestaurantDetailModel)
@@ -134,8 +152,12 @@ class _RestaurantDetailScreenState
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
-          childCount: models.length,
+          childCount: models.length + 1,
           (context, index) {
+            if (index == models.length) {
+              return CursorPaginationLoadingCircle(state: ratingState);
+            }
+
             final model = models[index];
 
             return InkWell(
