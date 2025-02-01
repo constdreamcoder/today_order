@@ -1,71 +1,36 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:today_order/core/di/di_setup.dart';
-import 'package:today_order/core/model/cursor_pagination_model.dart';
-import 'package:today_order/core/model/pagination_params.dart';
-import 'package:today_order/data/data_source/remote/restaurant_api.dart';
-import 'package:today_order/data/repository_impl/restaurant_repository_impl.dart';
-import 'package:today_order/domain/model/restaurant_model.dart';
+import 'package:today_order/data/repository_impl/restaurant_rating_repository_impl.dart';
+import 'package:today_order/domain/model/rating_model.dart';
 
-import '../../../core/respository/base_pagination_repository.dart';
-import '../../../domain/respository/restaurant_repository.dart';
+import '../../../core/di/di_setup.dart';
+import '../../../core/model/cursor_pagination_model.dart';
+import '../../../core/model/pagination_params.dart';
+import '../../../data/data_source/remote/restaurant_api.dart';
+import '../../../domain/respository/restaurant_rating_repository.dart';
 
-final restaurantProvider =
-    NotifierProvider<RestaurantNotifier, CursorPaginationBase>(() {
+final restaurantRatingProvider =
+NotifierProvider<RestaurantRatingNotifier, CursorPaginationBase>(() {
   final restaurantApi = RestaurantApi(getIt<Dio>());
-  final repository = RestaurantRepositoryImpl(restaurantApi: restaurantApi);
-  return RestaurantNotifier(repository: repository);
+  final repository = RestaurantRatingRepositoryImpl(restaurantApi: restaurantApi);
+  return RestaurantRatingNotifier(repository: repository);
 });
 
-class RestaurantNotifier extends Notifier<CursorPaginationBase> {
-  final RestaurantRepository repository;
+class RestaurantRatingNotifier extends Notifier<CursorPaginationBase> {
+  final RestaurantRatingRepository repository;
 
-  RestaurantNotifier({
+  RestaurantRatingNotifier({
     required this.repository,
   });
 
   @override
   CursorPaginationBase build() {
+    // TODO: implement build
     return CursorPaginationLoading();
   }
 
-  void getDetail({
-    required String id,
-  }) async {
-    // 만약 아직 데이터가 하나도 없는 상태라면
-    // 데이터를 가져오는 시도를 한다.
-    if (state is! CursorPagination) {
-      await this.paginate();
-    }
-
-    // state가 CursorPagination이 아닐 때 그냥 리턴
-    if (state is! CursorPagination) {
-      return;
-    }
-
-    final pState = state as CursorPagination;
-
-    final response = await repository.getRestaurantDetail(id: id);
-
-    if (pState.data.where((e) => e.id == id).isEmpty) {
-      state = pState.copyWith(
-        data: <RestaurantModel>[
-          ...pState.data,
-          response,
-        ],
-      );
-    } else {
-      state = pState.copyWith(
-        data: pState.data
-            .map<RestaurantModel>(
-              (e) => e.id == id ? response : e,
-            )
-            .toList(),
-      );
-    }
-  }
-
   Future<void> paginate({
+    required String id,
     int fetchCount = 20,
     bool fetchMore = false,
     bool forceRefetch = false,
@@ -96,7 +61,7 @@ class RestaurantNotifier extends Notifier<CursorPaginationBase> {
 
       // 데이터를 추가로 더 가져올 때
       if (fetchMore) {
-        final pState = state as CursorPagination<RestaurantModel>;
+        final pState = state as CursorPagination<RatingModel>;
 
         state = CursorPaginationFetchingMore(
           meta: pState.meta,
@@ -112,9 +77,9 @@ class RestaurantNotifier extends Notifier<CursorPaginationBase> {
         // 만약 기존 데이터가 있는 상황이라면
         // 기존 데이터를 보존한 채 Fetch (API 요청)를 진행
         if (state is CursorPagination && !forceRefetch) {
-          final pState = state as CursorPagination<RestaurantModel>;
+          final pState = state as CursorPagination<RatingModel>;
 
-          state = CursorPaginationRefetching<RestaurantModel>(
+          state = CursorPaginationRefetching<RatingModel>(
             meta: pState.meta,
             data: pState.data,
           );
@@ -125,11 +90,12 @@ class RestaurantNotifier extends Notifier<CursorPaginationBase> {
       }
 
       final response = await repository.paginate(
+        id: id,
         paginationParams: paginationParams,
       );
 
       if (state is CursorPaginationFetchingMore) {
-        final pState = state as CursorPaginationFetchingMore<RestaurantModel>;
+        final pState = state as CursorPaginationFetchingMore<RatingModel>;
         final newState = response.copyWith(
           data: [
             ...pState.data,

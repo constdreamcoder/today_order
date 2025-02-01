@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:today_order/core/view/cursor_pagination_loading_circle.dart';
+import 'package:today_order/domain/model/rating_model.dart';
 import 'package:today_order/domain/model/restaurant_detail_model.dart';
 import 'package:today_order/presentation/restaurant/component/restaurant_card.dart';
 import 'package:today_order/presentation/restaurant/provider/restaurant_detail_provider.dart';
 import 'package:today_order/presentation/restaurant/provider/restaurant_provider.dart';
 
 import '../../../core/layout/default_layout.dart';
+import '../../../core/model/cursor_pagination_model.dart';
 import '../../../domain/model/restaurant_model.dart';
 import '../../product/component/product_card.dart';
 import '../../rating/component/rating_card.dart';
+import '../provider/restaurant_rating_provider.dart';
 
 class RestaurantDetailScreen extends ConsumerStatefulWidget {
   final String id;
@@ -25,9 +29,15 @@ class RestaurantDetailScreen extends ConsumerStatefulWidget {
 
 class _RestaurantDetailScreenState
     extends ConsumerState<RestaurantDetailScreen> {
+  final ScrollController controller = ScrollController();
+
   @override
   void initState() {
     super.initState();
+
+    Future.microtask(() {
+      ref.read(restaurantRatingProvider.notifier).paginate(id: widget.id, forceRefetch: true);
+    });
 
     ref.read(restaurantProvider.notifier).getDetail(id: widget.id);
   }
@@ -35,6 +45,7 @@ class _RestaurantDetailScreenState
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(restaurantDetailProvider(widget.id));
+    final ratingsState = ref.watch(restaurantRatingProvider);
 
     if (state == null) {
       return const DefaultLayout(
@@ -56,7 +67,11 @@ class _RestaurantDetailScreenState
           if (state is RestaurantDetailModel) renderLabel(),
           if (state is RestaurantDetailModel)
             renderProducts(products: state.products),
-          // renderRatings(),
+          if (ratingsState is CursorPagination<RatingModel>)
+            renderRatings(
+              models: ratingsState.data,
+              ratingState: ratingsState,
+            ),
         ],
       ),
     );
@@ -90,7 +105,7 @@ class _RestaurantDetailScreenState
 
   SliverPadding renderProducts({
     required List<RestaurantProductModel> products,
-}) {
+  }) {
     return SliverPadding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       sliver: SliverList(
@@ -111,18 +126,25 @@ class _RestaurantDetailScreenState
     );
   }
 
-  SliverPadding renderRatings() {
+  SliverPadding renderRatings({
+    required List<RatingModel> models,
+    required CursorPagination ratingState,
+  }) {
     return SliverPadding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
-          childCount: 10,
+          childCount: models.length,
           (context, index) {
+            final model = models[index];
+
             return InkWell(
               onTap: () {},
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 16),
-                child: RatingCard(),
+                child: RatingCard(
+                  model: model,
+                ),
               ),
             );
           },

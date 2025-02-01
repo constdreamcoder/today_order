@@ -3,6 +3,7 @@ import 'package:retrofit/retrofit.dart';
 import 'package:today_order/core/model/cursor_pagination_model.dart';
 import 'package:today_order/domain/model/login_response.dart';
 import 'package:today_order/domain/model/product_model.dart';
+import 'package:today_order/domain/model/rating_model.dart';
 import 'package:today_order/domain/model/restaurant_detail_model.dart';
 import 'package:today_order/domain/model/restaurant_model.dart';
 
@@ -28,5 +29,14 @@ abstract class RestaurantApi {
   })
   Future<RestaurantDetailModel> getDetail({
     @Path() required String id,
+  });
+
+  @GET('/restaurant/{id}/rating')
+  @Headers({
+    'accessToken': 'true',
+  })
+  Future<CursorPagination<RatingModel>> paginateRatings({
+    @Path() required String id,
+    @Queries() PaginationParams? paginationParams = const PaginationParams(),
   });
 }
