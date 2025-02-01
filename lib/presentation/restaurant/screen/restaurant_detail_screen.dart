@@ -56,7 +56,7 @@ class _RestaurantDetailScreenState
           if (state is RestaurantDetailModel) renderLabel(),
           if (state is RestaurantDetailModel)
             renderProducts(products: state.products),
-          // renderRatings(),
+          renderRatings(),
         ],
       ),
     );
