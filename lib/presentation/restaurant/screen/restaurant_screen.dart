@@ -81,33 +81,38 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: ListView.separated(
-        controller: controller,
-        itemCount: cp.data.length + 1,
-        itemBuilder: (context, index) {
-          if (index == state.data.length) {
-            return CursorPaginationLoadingCircle(
-              state: cp,
-            );
-          }
-
-          final restaurant = cp.data[index];
-
-          return GestureDetector(
-            onTap: () {
-              context.push(
-                '${RoutePaths.restaurant}/${restaurant.id}',
+      child: RefreshIndicator(
+        onRefresh: () async {
+          ref.read(restaurantProvider.notifier).paginate(forceRefetch: true);
+        },
+        child: ListView.separated(
+          controller: controller,
+          itemCount: cp.data.length + 1,
+          itemBuilder: (context, index) {
+            if (index == state.data.length) {
+              return CursorPaginationLoadingCircle(
+                state: cp,
               );
-            },
-            child: RestaurantCard(
-              model: restaurant,
-              heroKey: restaurant.id,
-            ),
-          );
-        },
-        separatorBuilder: (context, index) {
-          return const SizedBox(height: 16);
-        },
+            }
+
+            final restaurant = cp.data[index];
+
+            return GestureDetector(
+              onTap: () {
+                context.push(
+                  '${RoutePaths.restaurant}/${restaurant.id}',
+                );
+              },
+              child: RestaurantCard(
+                model: restaurant,
+                heroKey: restaurant.id,
+              ),
+            );
+          },
+          separatorBuilder: (context, index) {
+            return const SizedBox(height: 16);
+          },
+        ),
       ),
     );
   }
