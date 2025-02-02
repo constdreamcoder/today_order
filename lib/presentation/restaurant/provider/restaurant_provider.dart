@@ -1,3 +1,4 @@
+import 'package:debounce_throttle/debounce_throttle.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:today_order/core/di/di_setup.dart';
@@ -10,6 +11,18 @@ import 'package:today_order/domain/model/restaurant_model.dart';
 import '../../../core/respository/base_pagination_repository.dart';
 import '../../../domain/respository/restaurant_repository.dart';
 
+class _PaginationInfo {
+  final int fetchCount;
+  final bool fetchMore;
+  final bool forceRefetch;
+
+  _PaginationInfo({
+    this.fetchCount = 20,
+    this.fetchMore = false,
+    this.forceRefetch = false,
+  });
+}
+
 final restaurantProvider =
     NotifierProvider<RestaurantNotifier, CursorPaginationBase>(() {
   final restaurantApi = RestaurantApi(getIt<Dio>());
@@ -19,10 +32,22 @@ final restaurantProvider =
 
 class RestaurantNotifier extends Notifier<CursorPaginationBase> {
   final RestaurantRepository _repository;
+  final paginationThrottle = Throttle(
+    const Duration(seconds: 3),
+    initialValue: _PaginationInfo(),
+    checkEquality: false,
+  );
 
   RestaurantNotifier({
     required RestaurantRepository repository,
-  }) : _repository = repository;
+  }) : _repository = repository {
+    paginationThrottle.values.listen(
+          (state) {
+            print(state.forceRefetch);
+        _throttledPagination(state);
+      },
+    );
+  }
 
   @override
   CursorPaginationBase build() {
@@ -70,6 +95,18 @@ class RestaurantNotifier extends Notifier<CursorPaginationBase> {
     bool fetchMore = false,
     bool forceRefetch = false,
   }) async {
+    paginationThrottle.setValue(_PaginationInfo(
+      fetchMore: fetchMore,
+      fetchCount: fetchCount,
+      forceRefetch: forceRefetch,
+    ));
+  }
+
+  _throttledPagination(_PaginationInfo info) async {
+    final fetchCount = info.fetchCount;
+    final fetchMore = info.fetchMore;
+    final forceRefetch = info.forceRefetch;
+
     try {
       // hasMore = false인 경우,
       // 기존 상태에서 이미 다음 데이터가 없다는 값을 들고 있다면
