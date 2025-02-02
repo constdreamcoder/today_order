@@ -11,12 +11,12 @@ import 'package:today_order/domain/model/restaurant_model.dart';
 import '../../../core/respository/base_pagination_repository.dart';
 import '../../../domain/respository/restaurant_repository.dart';
 
-class _PaginationInfo {
+class _RestaurantPaginationInfo {
   final int fetchCount;
   final bool fetchMore;
   final bool forceRefetch;
 
-  _PaginationInfo({
+  _RestaurantPaginationInfo({
     this.fetchCount = 20,
     this.fetchMore = false,
     this.forceRefetch = false,
@@ -34,7 +34,7 @@ class RestaurantNotifier extends Notifier<CursorPaginationBase> {
   final RestaurantRepository _repository;
   final paginationThrottle = Throttle(
     const Duration(seconds: 3),
-    initialValue: _PaginationInfo(),
+    initialValue: _RestaurantPaginationInfo(),
     checkEquality: false,
   );
 
@@ -95,14 +95,14 @@ class RestaurantNotifier extends Notifier<CursorPaginationBase> {
     bool fetchMore = false,
     bool forceRefetch = false,
   }) async {
-    paginationThrottle.setValue(_PaginationInfo(
+    paginationThrottle.setValue(_RestaurantPaginationInfo(
       fetchMore: fetchMore,
       fetchCount: fetchCount,
       forceRefetch: forceRefetch,
     ));
   }
 
-  _throttledPagination(_PaginationInfo info) async {
+  _throttledPagination(_RestaurantPaginationInfo info) async {
     final fetchCount = info.fetchCount;
     final fetchMore = info.fetchMore;
     final forceRefetch = info.forceRefetch;
