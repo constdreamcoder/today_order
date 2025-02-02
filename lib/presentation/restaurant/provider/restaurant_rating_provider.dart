@@ -17,11 +17,11 @@ NotifierProvider<RestaurantRatingNotifier, CursorPaginationBase>(() {
 });
 
 class RestaurantRatingNotifier extends Notifier<CursorPaginationBase> {
-  final RestaurantRatingRepository repository;
+  final RestaurantRatingRepository _repository;
 
   RestaurantRatingNotifier({
-    required this.repository,
-  });
+    required RestaurantRatingRepository repository,
+  }) : _repository = repository;
 
   @override
   CursorPaginationBase build() {
@@ -89,7 +89,7 @@ class RestaurantRatingNotifier extends Notifier<CursorPaginationBase> {
         }
       }
 
-      final response = await repository.paginate(
+      final response = await _repository.paginate(
         id: id,
         paginationParams: paginationParams,
       );

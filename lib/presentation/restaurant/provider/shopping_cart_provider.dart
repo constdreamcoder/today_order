@@ -2,29 +2,37 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:today_order/core/di/di_setup.dart';
+import 'package:today_order/data/data_source/remote/order_api.dart';
 import 'package:today_order/data/data_source/remote/user_api.dart';
+import 'package:today_order/data/repository_impl/order_repository_impl.dart';
 import 'package:today_order/data/repository_impl/shopping_cart_respository_impl.dart';
 import 'package:today_order/domain/model/product_model.dart';
 import 'package:today_order/domain/model/shopping_cart_item_model.dart';
+import 'package:today_order/domain/respository/order_repository.dart';
 import 'package:today_order/domain/respository/shopping_cart_repository.dart';
 import 'package:collection/collection.dart';
-
-import '../../../domain/model/restaurant_detail_model.dart';
-import '../../../domain/model/restaurant_model.dart';
 
 final shoppingCartProvider =
     NotifierProvider<ShoppingCartNotifier, List<ShoppingCartItemModel>>(() {
   final userApi = UserApi(getIt<Dio>());
-  final repository = ShoppingCartRepositoryImpl(userApi: userApi);
-  return ShoppingCartNotifier(repository: repository);
+  final orderApi = OrderApi(getIt<Dio>());
+  final shoppingCartRepository = ShoppingCartRepositoryImpl(userApi: userApi);
+  final orderRepository = OrderRepositoryImpl(orderApi: orderApi);
+  return ShoppingCartNotifier(
+    shoppingCartRepository: shoppingCartRepository,
+    orderRepository: orderRepository,
+  );
 });
 
 class ShoppingCartNotifier extends Notifier<List<ShoppingCartItemModel>> {
-  final ShoppingCartRepository repository;
+  final ShoppingCartRepository _shoppingCartRepository;
+  final OrderRepository _orderRepository;
 
   ShoppingCartNotifier({
-    required this.repository,
-  });
+    required ShoppingCartRepository shoppingCartRepository,
+    required OrderRepository orderRepository,
+  })  : _shoppingCartRepository = shoppingCartRepository,
+        _orderRepository = orderRepository;
 
   @override
   List<ShoppingCartItemModel> build() {
@@ -33,7 +41,7 @@ class ShoppingCartNotifier extends Notifier<List<ShoppingCartItemModel>> {
   }
 
   Future<void> patchShoppingCart() async {
-    await repository.patchShoppingCart(
+    await _shoppingCartRepository.patchShoppingCart(
       newShoppingCartItems: state,
     );
   }
@@ -96,5 +104,16 @@ class ShoppingCartNotifier extends Notifier<List<ShoppingCartItemModel>> {
     }
 
     patchShoppingCart();
+  }
+
+  Future<bool> postOrder() async {
+    try {
+      await _orderRepository.postOrder(state);
+      return true;
+    } catch (e, stack) {
+      print(e);
+      print(stack);
+      return false;
+    }
   }
 }

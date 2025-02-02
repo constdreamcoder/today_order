@@ -19,4 +19,8 @@ class DataUtils {
   static List<String> listPathsToUrls(List paths) {
     return paths.map((e) => pathToUrl(e)).toList();
   }
+
+  static DateTime stringToDateTime(String value) {
+    return DateTime.parse(value);
+  }
 }
