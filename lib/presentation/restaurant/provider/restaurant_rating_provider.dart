@@ -1,3 +1,4 @@
+import 'package:debounce_throttle/debounce_throttle.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:today_order/data/repository_impl/restaurant_rating_repository_impl.dart';
@@ -9,6 +10,20 @@ import '../../../core/model/pagination_params.dart';
 import '../../../data/data_source/remote/restaurant_api.dart';
 import '../../../domain/respository/restaurant_rating_repository.dart';
 
+class _RestaurantDetailPaginationInfo {
+  final String id;
+  final int fetchCount;
+  final bool fetchMore;
+  final bool forceRefetch;
+
+  _RestaurantDetailPaginationInfo({
+    this.id = '',
+    this.fetchCount = 20,
+    this.fetchMore = false,
+    this.forceRefetch = false,
+  });
+}
+
 final restaurantRatingProvider =
 NotifierProvider<RestaurantRatingNotifier, CursorPaginationBase>(() {
   final restaurantApi = RestaurantApi(getIt<Dio>());
@@ -18,10 +33,22 @@ NotifierProvider<RestaurantRatingNotifier, CursorPaginationBase>(() {
 
 class RestaurantRatingNotifier extends Notifier<CursorPaginationBase> {
   final RestaurantRatingRepository _repository;
+  final paginationThrottle = Throttle(
+    const Duration(seconds: 3),
+    initialValue: _RestaurantDetailPaginationInfo(),
+    checkEquality: false,
+  );
 
   RestaurantRatingNotifier({
     required RestaurantRatingRepository repository,
-  }) : _repository = repository;
+  }) : _repository = repository {
+    paginationThrottle.values.listen(
+          (state) {
+        print(state.forceRefetch);
+        _throttledPagination(state);
+      },
+    );
+  }
 
   @override
   CursorPaginationBase build() {
@@ -35,6 +62,20 @@ class RestaurantRatingNotifier extends Notifier<CursorPaginationBase> {
     bool fetchMore = false,
     bool forceRefetch = false,
   }) async {
+    paginationThrottle.setValue(_RestaurantDetailPaginationInfo(
+      id: id,
+      fetchMore: fetchMore,
+      fetchCount: fetchCount,
+      forceRefetch: forceRefetch,
+    ));
+  }
+
+  _throttledPagination(_RestaurantDetailPaginationInfo info) async {
+    final id = info.id;
+    final fetchCount = info.fetchCount;
+    final fetchMore = info.fetchMore;
+    final forceRefetch = info.forceRefetch;
+
     try {
       // hasMore = false인 경우,
       // 기존 상태에서 이미 다음 데이터가 없다는 값을 들고 있다면
@@ -96,12 +137,6 @@ class RestaurantRatingNotifier extends Notifier<CursorPaginationBase> {
 
       if (state is CursorPaginationFetchingMore) {
         final pState = state as CursorPaginationFetchingMore<RatingModel>;
-        final newState = response.copyWith(
-          data: [
-            ...pState.data,
-            ...response.data,
-          ],
-        );
         state = response.copyWith(
           data: [
             ...pState.data,
