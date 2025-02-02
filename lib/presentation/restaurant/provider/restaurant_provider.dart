@@ -130,12 +130,6 @@ class RestaurantNotifier extends Notifier<CursorPaginationBase> {
 
       if (state is CursorPaginationFetchingMore) {
         final pState = state as CursorPaginationFetchingMore<RestaurantModel>;
-        final newState = response.copyWith(
-          data: [
-            ...pState.data,
-            ...response.data,
-          ],
-        );
         state = response.copyWith(
           data: [
             ...pState.data,
