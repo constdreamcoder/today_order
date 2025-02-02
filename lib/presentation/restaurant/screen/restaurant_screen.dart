@@ -99,7 +99,10 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
                 '${RoutePaths.restaurant}/${restaurant.id}',
               );
             },
-            child: RestaurantCard(model: restaurant),
+            child: RestaurantCard(
+              model: restaurant,
+              heroKey: restaurant.id,
+            ),
           );
         },
         separatorBuilder: (context, index) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:today_order/core/theme/app_colors.dart';
 import 'package:today_order/core/view/cursor_pagination_loading_circle.dart';
 import 'package:today_order/domain/model/rating_model.dart';
@@ -121,7 +122,7 @@ class _RestaurantDetailScreenState
           renderTop(
             model: state,
           ),
-          // if (state is! RestaurantDetailModel)
+          if (state is! RestaurantDetailModel) renderLoading(),
           if (state is RestaurantDetailModel) renderLabel(),
           if (state is RestaurantDetailModel)
             renderProducts(
@@ -138,6 +139,23 @@ class _RestaurantDetailScreenState
     );
   }
 
+  SliverPadding renderLoading() {
+    return SliverPadding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      sliver: SliverList(
+        delegate: SliverChildListDelegate(
+          List.generate(
+            3,
+            (index) => const Padding(
+              padding: const EdgeInsets.only(bottom: 32),
+              child: _ShimmerCollectionWidget(),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   SliverToBoxAdapter renderTop({
     required RestaurantModel model,
   }) {
@@ -145,6 +163,7 @@ class _RestaurantDetailScreenState
       child: RestaurantCard(
         isFromDetail: true,
         model: model,
+        heroKey: model.id,
       ),
     );
   }
@@ -185,7 +204,9 @@ class _RestaurantDetailScreenState
                   detail: model.detail,
                   price: model.price,
                 );
-                ref.read(shoppingCartProvider.notifier).addToShoppingCart(product: product);
+                ref
+                    .read(shoppingCartProvider.notifier)
+                    .addToShoppingCart(product: product);
               },
               child: Padding(
                 padding: const EdgeInsets.only(top: 16),
@@ -228,6 +249,44 @@ class _RestaurantDetailScreenState
           },
         ),
       ),
+    );
+  }
+}
+
+class _ShimmerCollectionWidget extends StatelessWidget {
+  const _ShimmerCollectionWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: List.generate(
+        5,
+            (index) => const _ShimmerWidget(),
+      ),
+    );
+  }
+}
+
+class _ShimmerWidget extends StatelessWidget {
+  const _ShimmerWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Shimmer.fromColors(
+          baseColor: Colors.grey.withOpacity(0.7),
+          highlightColor: Colors.grey.withOpacity(0.3),
+          child: Container(
+            width: double.infinity,
+            height: 16,
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+      ],
     );
   }
 }

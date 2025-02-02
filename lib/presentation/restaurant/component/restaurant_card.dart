@@ -7,24 +7,38 @@ import '../../../domain/model/restaurant_model.dart';
 class RestaurantCard extends StatelessWidget {
   final bool isFromDetail;
   final RestaurantModel? model;
+  final String? heroKey;
 
   const RestaurantCard({
     super.key,
     this.isFromDetail = false,
     this.model,
+    this.heroKey,
   });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(isFromDetail ? 0 : 12),
-          child: Image.network(
-            model?.thumbUrl ?? Constant.tempImageURL,
-            fit: BoxFit.cover,
+        if (heroKey != null)
+          Hero(
+            tag: ObjectKey(heroKey),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(isFromDetail ? 0 : 12),
+              child: Image.network(
+                model?.thumbUrl ?? Constant.tempImageURL,
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
-        ),
+        if (heroKey == null)
+          ClipRRect(
+            borderRadius: BorderRadius.circular(isFromDetail ? 0 : 12),
+            child: Image.network(
+              model?.thumbUrl ?? Constant.tempImageURL,
+              fit: BoxFit.cover,
+            ),
+          ),
         const SizedBox(height: 16),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: isFromDetail ? 16 : 0),
@@ -66,7 +80,9 @@ class RestaurantCard extends StatelessWidget {
                   renderDot(),
                   _IconText(
                     icon: Icons.monetization_on,
-                    label: model?.deliveryFee == 0 ? '무료' : model?.deliveryFee.toString() ?? '',
+                    label: model?.deliveryFee == 0
+                        ? '무료'
+                        : model?.deliveryFee.toString() ?? '',
                   ),
                 ],
               ),
