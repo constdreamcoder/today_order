@@ -13,4 +13,9 @@ class ShoppingCartRepositoryImpl implements ShoppingCartRepository {
   Future<List<ShoppingCartItemModel>> getShoppingCart() async {
     return await userApi.getShoppingCart();
   }
+
+  @override
+  Future<List<ShoppingCartItemModel>> patchShoppingCart() async {
+    return await userApi.getShoppingCart();
+  }
 }
