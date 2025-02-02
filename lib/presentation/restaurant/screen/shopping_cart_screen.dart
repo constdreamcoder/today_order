@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:today_order/core/component/custom_button.dart';
 import 'package:today_order/core/constant/constant.dart';
 import 'package:today_order/core/layout/default_layout.dart';
+import 'package:today_order/core/routing/provider/router_provider.dart';
+import 'package:today_order/core/routing/route_paths.dart';
 import 'package:today_order/core/theme/app_colors.dart';
 import 'package:today_order/domain/model/restaurant_detail_model.dart';
 import 'package:today_order/presentation/product/component/product_card.dart';
@@ -100,10 +103,10 @@ class ShoppingCartScreen extends ConsumerWidget {
                           color: BODY_TEXT_COLOR,
                         ),
                       ),
-                      // if(shopingCart.length > 0)
-                      Text(
-                        '₩$deliveryFee',
-                      ),
+                      if (shoppingCartState.isNotEmpty)
+                        Text(
+                          '₩$deliveryFee',
+                        ),
                     ],
                   ),
                   Row(
@@ -124,8 +127,19 @@ class ShoppingCartScreen extends ConsumerWidget {
                     width: double.infinity,
                     child: CustomButton(
                       onPressed: () async {
-                        final isPassed = await ref.read(shoppingCartProvider.notifier).postOrder();
-                        print(isPassed);
+                        final isPassed = await ref
+                            .read(shoppingCartProvider.notifier)
+                            .postOrder();
+
+                        if (isPassed) {
+                          context.go(RoutePaths.orderDone);
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('결제 실패!'),
+                            ),
+                          );
+                        }
                       },
                       foregroundColor: Colors.white,
                       backgroundColor: PRIMAR_COLOR,
