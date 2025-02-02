@@ -32,7 +32,7 @@ final restaurantProvider =
 
 class RestaurantNotifier extends Notifier<CursorPaginationBase> {
   final RestaurantRepository _repository;
-  final paginationThrottle = Throttle(
+  final _paginationThrottle = Throttle(
     const Duration(seconds: 3),
     initialValue: _RestaurantPaginationInfo(),
     checkEquality: false,
@@ -41,7 +41,7 @@ class RestaurantNotifier extends Notifier<CursorPaginationBase> {
   RestaurantNotifier({
     required RestaurantRepository repository,
   }) : _repository = repository {
-    paginationThrottle.values.listen(
+    _paginationThrottle.values.listen(
           (state) {
             print(state.forceRefetch);
         _throttledPagination(state);
@@ -95,7 +95,7 @@ class RestaurantNotifier extends Notifier<CursorPaginationBase> {
     bool fetchMore = false,
     bool forceRefetch = false,
   }) async {
-    paginationThrottle.setValue(_RestaurantPaginationInfo(
+    _paginationThrottle.setValue(_RestaurantPaginationInfo(
       fetchMore: fetchMore,
       fetchCount: fetchCount,
       forceRefetch: forceRefetch,

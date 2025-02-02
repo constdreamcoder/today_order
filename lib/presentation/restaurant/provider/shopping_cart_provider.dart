@@ -1,3 +1,4 @@
+import 'package:debounce_throttle/debounce_throttle.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -27,12 +28,23 @@ final shoppingCartProvider =
 class ShoppingCartNotifier extends Notifier<List<ShoppingCartItemModel>> {
   final ShoppingCartRepository _shoppingCartRepository;
   final OrderRepository _orderRepository;
+  final _updateBasketDebounce = Debouncer(
+    const Duration(seconds: 1),
+    initialValue: null,
+    checkEquality: false,
+  );
 
   ShoppingCartNotifier({
     required ShoppingCartRepository shoppingCartRepository,
     required OrderRepository orderRepository,
   })  : _shoppingCartRepository = shoppingCartRepository,
-        _orderRepository = orderRepository;
+        _orderRepository = orderRepository {
+    _updateBasketDebounce.values.listen(
+      (event) {
+        patchShoppingCart();
+      },
+    );
+  }
 
   @override
   List<ShoppingCartItemModel> build() {
@@ -72,7 +84,7 @@ class ShoppingCartNotifier extends Notifier<List<ShoppingCartItemModel>> {
       ];
     }
 
-    patchShoppingCart();
+    _updateBasketDebounce.setValue(null);
   }
 
   Future<void> removeFromShoppingCart({
@@ -103,7 +115,7 @@ class ShoppingCartNotifier extends Notifier<List<ShoppingCartItemModel>> {
           .toList();
     }
 
-    patchShoppingCart();
+    _updateBasketDebounce.setValue(null);
   }
 
   Future<bool> postOrder() async {
