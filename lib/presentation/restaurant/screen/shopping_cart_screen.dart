@@ -123,7 +123,10 @@ class ShoppingCartScreen extends ConsumerWidget {
                   SizedBox(
                     width: double.infinity,
                     child: CustomButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        final isPassed = await ref.read(shoppingCartProvider.notifier).postOrder();
+                        print(isPassed);
+                      },
                       foregroundColor: Colors.white,
                       backgroundColor: PRIMAR_COLOR,
                       child: const Text('결제하기'),

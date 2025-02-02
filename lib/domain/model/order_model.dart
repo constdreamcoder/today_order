@@ -10,14 +10,14 @@ part 'order_model.g.dart';
 class OrderModel implements IModelWithId {
   final String id;
   final List<OrderProductAndCountModel> products;
-  final RestaurantModel restaurantModel;
+  final RestaurantModel restaurant;
   final int totalPrice;
   final String createdAt;
 
   OrderModel({
     required this.id,
     required this.products,
-    required this.restaurantModel,
+    required this.restaurant,
     required this.totalPrice,
     required this.createdAt,
   });
