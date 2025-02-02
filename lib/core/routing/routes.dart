@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:today_order/core/routing/route_paths.dart';
 import 'package:today_order/core/view/splash_screen.dart';
+import 'package:today_order/presentation/restaurant/screen/order_done_screen.dart';
 import 'package:today_order/presentation/restaurant/screen/restaurant_detail_screen.dart';
 import 'package:today_order/presentation/root_tab.dart';
 import 'package:today_order/presentation/user/screen/login_screen.dart';
@@ -30,6 +31,10 @@ List<RouteBase> get routes => [
   GoRoute(
     path: RoutePaths.shoppingCart,
     builder: (context, state) => const ShoppingCartScreen(),
+  ),
+  GoRoute(
+    path: RoutePaths.orderDone,
+    builder: (context, state) => const OrderDoneScreen(),
   ),
   StatefulShellRoute.indexedStack(
     builder: (context, state, navigationShell) {
@@ -70,7 +75,7 @@ List<RouteBase> get routes => [
       StatefulShellBranch(
         routes: [
           GoRoute(
-            path: RoutePaths.orderDone,
+            path: RoutePaths.order,
             builder: (context, state) {
               return Center(
                 child: Text('주문'),
