@@ -145,6 +145,7 @@ class _RestaurantDetailScreenState
       child: RestaurantCard(
         isFromDetail: true,
         model: model,
+        heroKey: model.id,
       ),
     );
   }
