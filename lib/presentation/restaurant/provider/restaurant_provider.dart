@@ -18,11 +18,11 @@ final restaurantProvider =
 });
 
 class RestaurantNotifier extends Notifier<CursorPaginationBase> {
-  final RestaurantRepository repository;
+  final RestaurantRepository _repository;
 
   RestaurantNotifier({
-    required this.repository,
-  });
+    required RestaurantRepository repository,
+  }) : _repository = repository;
 
   @override
   CursorPaginationBase build() {
@@ -45,7 +45,7 @@ class RestaurantNotifier extends Notifier<CursorPaginationBase> {
 
     final pState = state as CursorPagination;
 
-    final response = await repository.getRestaurantDetail(id: id);
+    final response = await _repository.getRestaurantDetail(id: id);
 
     if (pState.data.where((e) => e.id == id).isEmpty) {
       state = pState.copyWith(
@@ -124,7 +124,7 @@ class RestaurantNotifier extends Notifier<CursorPaginationBase> {
         }
       }
 
-      final response = await repository.paginate(
+      final response = await _repository.paginate(
         paginationParams: paginationParams,
       );
 

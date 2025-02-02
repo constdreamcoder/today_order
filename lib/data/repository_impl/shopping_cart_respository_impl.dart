@@ -4,15 +4,15 @@ import 'package:today_order/domain/model/shopping_cart_item_model.dart';
 import 'package:today_order/domain/respository/shopping_cart_repository.dart';
 
 class ShoppingCartRepositoryImpl implements ShoppingCartRepository {
-  final UserApi userApi;
+  final UserApi _userApi;
 
   ShoppingCartRepositoryImpl({
-    required this.userApi,
-  });
+    required UserApi userApi,
+  }) : _userApi = userApi;
 
   @override
   Future<List<ShoppingCartItemModel>> getShoppingCart() async {
-    return await userApi.getShoppingCart();
+    return await _userApi.getShoppingCart();
   }
 
   @override
@@ -29,6 +29,6 @@ class ShoppingCartRepositoryImpl implements ShoppingCartRepository {
         .toList();
 
     final body = PatchShoppingCartBody(basket: basket);
-    return await userApi.patchShoppingCart(body: body);
+    return await _userApi.patchShoppingCart(body: body);
   }
 }
