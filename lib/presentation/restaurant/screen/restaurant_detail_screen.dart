@@ -9,10 +9,12 @@ import 'package:today_order/presentation/restaurant/component/restaurant_card.da
 import 'package:today_order/presentation/restaurant/provider/restaurant_detail_provider.dart';
 import 'package:today_order/presentation/restaurant/provider/restaurant_provider.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:today_order/presentation/restaurant/provider/shopping_cart_provider.dart';
 
 import '../../../core/layout/default_layout.dart';
 import '../../../core/model/cursor_pagination_model.dart';
 import '../../../core/routing/route_paths.dart';
+import '../../../domain/model/product_model.dart';
 import '../../../domain/model/restaurant_model.dart';
 import '../../product/component/product_card.dart';
 import '../../rating/component/rating_card.dart';
@@ -70,6 +72,7 @@ class _RestaurantDetailScreenState
   Widget build(BuildContext context) {
     final state = ref.watch(restaurantDetailProvider(widget.id));
     final ratingsState = ref.watch(restaurantRatingProvider);
+    final shoppingCartState = ref.watch(shoppingCartProvider);
 
     if (state == null) {
       return const DefaultLayout(
@@ -89,18 +92,23 @@ class _RestaurantDetailScreenState
         },
         backgroundColor: PRIMAR_COLOR,
         child: badges.Badge(
-          showBadge: true,
+          showBadge: shoppingCartState.isNotEmpty,
           badgeContent: Text(
-            '12',
-            style: TextStyle(
+            shoppingCartState
+                .fold(
+                  0,
+                  (previous, next) => previous + next.count,
+                )
+                .toString(),
+            style: const TextStyle(
               color: PRIMAR_COLOR,
               fontSize: 10,
             ),
           ),
-          badgeStyle: badges.BadgeStyle(
+          badgeStyle: const badges.BadgeStyle(
             badgeColor: Colors.white,
           ),
-          child: Icon(
+          child: const Icon(
             Icons.shopping_basket_outlined,
             color: Colors.white,
           ),
@@ -116,7 +124,10 @@ class _RestaurantDetailScreenState
           // if (state is! RestaurantDetailModel)
           if (state is RestaurantDetailModel) renderLabel(),
           if (state is RestaurantDetailModel)
-            renderProducts(products: state.products),
+            renderProducts(
+              restaurant: state,
+              products: state.products,
+            ),
           if (ratingsState is CursorPagination<RatingModel>)
             renderRatings(
               models: ratingsState.data,
@@ -154,6 +165,7 @@ class _RestaurantDetailScreenState
   }
 
   SliverPadding renderProducts({
+    required RestaurantModel restaurant,
     required List<RestaurantProductModel> products,
   }) {
     return SliverPadding(
@@ -164,10 +176,22 @@ class _RestaurantDetailScreenState
           (context, index) {
             final model = products[index];
             return InkWell(
-              onTap: () {},
+              onTap: () {
+                final product = ProductModel(
+                  id: model.id,
+                  restaurant: restaurant,
+                  name: model.name,
+                  imgUrl: model.imgUrl,
+                  detail: model.detail,
+                  price: model.price,
+                );
+                ref.read(shoppingCartProvider.notifier).addToShoppingCart(product: product);
+              },
               child: Padding(
                 padding: const EdgeInsets.only(top: 16),
-                child: ProductCard(model: model),
+                child: ProductCard.fromRestaurantProductModel(
+                  model: model,
+                ),
               ),
             );
           },

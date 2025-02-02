@@ -19,7 +19,7 @@ class ShoppingCartRepositoryImpl implements ShoppingCartRepository {
   Future<List<ShoppingCartItemModel>> patchShoppingCart({
     required List<ShoppingCartItemModel> newShoppingCartItems,
   }) async {
-    List<PatchShoppingCartBodyItem> basket = newShoppingCartItems
+    final basket = newShoppingCartItems
         .map(
           (e) => PatchShoppingCartBodyItem(
             productId: e.product.id,
@@ -27,6 +27,7 @@ class ShoppingCartRepositoryImpl implements ShoppingCartRepository {
           ),
         )
         .toList();
+
     final body = PatchShoppingCartBody(basket: basket);
     return await userApi.patchShoppingCart(body: body);
   }

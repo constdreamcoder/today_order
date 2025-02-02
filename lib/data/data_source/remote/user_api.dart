@@ -12,15 +12,22 @@ abstract class UserApi {
   factory UserApi(Dio dio, {String baseUrl}) = _UserApi;
 
   @GET('/user/me')
-  @Headers({'accessToken': 'true'})
+  @Headers({
+    'accessToken': 'true',
+  })
   Future<UserModel> getMe();
 
   @GET('/user/me/basket')
-  @Headers({'accessToken': 'true'})
+  @Headers({
+    'accessToken': 'true',
+  })
   Future<List<ShoppingCartItemModel>> getShoppingCart();
 
   @PATCH('/user/me/basket')
-  @Headers({'accessToken': 'true'})
+  @Headers({
+    'accessToken': 'true',
+    'Content-Type': 'application/json',
+  })
   Future<List<ShoppingCartItemModel>> patchShoppingCart({
     @Body() required PatchShoppingCartBody body,
   });
