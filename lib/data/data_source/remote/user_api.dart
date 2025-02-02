@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart' hide Headers;
 import 'package:retrofit/retrofit.dart';
+import 'package:today_order/domain/model/shopping_cart_item_model.dart';
 import 'package:today_order/domain/model/user_model.dart';
 
 part 'user_api.g.dart';
@@ -14,4 +15,10 @@ abstract class UserApi {
     'accessToken': 'true'
   })
   Future<UserModel> getMe();
+
+  @GET('/user/me/basket')
+  @Headers({
+    'accessToken': 'true'
+  })
+  Future<List<ShoppingCartItemModel>> getShoppingCart();
 }
