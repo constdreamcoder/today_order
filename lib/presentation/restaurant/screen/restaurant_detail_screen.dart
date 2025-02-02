@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:today_order/core/theme/app_colors.dart';
 import 'package:today_order/core/view/cursor_pagination_loading_circle.dart';
 import 'package:today_order/domain/model/rating_model.dart';
@@ -11,6 +12,7 @@ import 'package:badges/badges.dart' as badges;
 
 import '../../../core/layout/default_layout.dart';
 import '../../../core/model/cursor_pagination_model.dart';
+import '../../../core/routing/route_paths.dart';
 import '../../../domain/model/restaurant_model.dart';
 import '../../product/component/product_card.dart';
 import '../../rating/component/rating_card.dart';
@@ -82,7 +84,9 @@ class _RestaurantDetailScreenState
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(40),
         ),
-        onPressed: () {},
+        onPressed: () {
+          context.push(RoutePaths.shoppingCart);
+        },
         backgroundColor: PRIMAR_COLOR,
         child: badges.Badge(
           showBadge: true,

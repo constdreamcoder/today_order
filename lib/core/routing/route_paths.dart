@@ -7,4 +7,5 @@ abstract class RoutePaths {
   static const String product = '/product';
   static const String orderDone = '/order_done';
   static const String profile = '/profile';
+  static const String shoppingCart = '/shopping_cart';
 }
