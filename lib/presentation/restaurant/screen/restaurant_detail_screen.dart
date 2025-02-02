@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:today_order/core/theme/app_colors.dart';
 import 'package:today_order/core/view/cursor_pagination_loading_circle.dart';
 import 'package:today_order/domain/model/rating_model.dart';
 import 'package:today_order/domain/model/restaurant_detail_model.dart';
 import 'package:today_order/presentation/restaurant/component/restaurant_card.dart';
 import 'package:today_order/presentation/restaurant/provider/restaurant_detail_provider.dart';
 import 'package:today_order/presentation/restaurant/provider/restaurant_provider.dart';
+import 'package:badges/badges.dart' as badges;
 
 import '../../../core/layout/default_layout.dart';
 import '../../../core/model/cursor_pagination_model.dart';
@@ -36,7 +38,9 @@ class _RestaurantDetailScreenState
     super.initState();
 
     Future.microtask(() {
-      ref.read(restaurantRatingProvider.notifier).paginate(id: widget.id, forceRefetch: true);
+      ref
+          .read(restaurantRatingProvider.notifier)
+          .paginate(id: widget.id, forceRefetch: true);
     });
 
     ref.read(restaurantProvider.notifier).getDetail(id: widget.id);
@@ -47,9 +51,9 @@ class _RestaurantDetailScreenState
   void listener() {
     if (controller.offset > controller.position.maxScrollExtent - 300) {
       ref.read(restaurantRatingProvider.notifier).paginate(
-        id: widget.id,
-        fetchMore: true,
-      );
+            id: widget.id,
+            fetchMore: true,
+          );
     }
   }
 
@@ -74,6 +78,30 @@ class _RestaurantDetailScreenState
     }
 
     return DefaultLayout(
+      floatingActionButton: FloatingActionButton(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(40),
+        ),
+        onPressed: () {},
+        backgroundColor: PRIMAR_COLOR,
+        child: badges.Badge(
+          showBadge: true,
+          badgeContent: Text(
+            '12',
+            style: TextStyle(
+              color: PRIMAR_COLOR,
+              fontSize: 10,
+            ),
+          ),
+          badgeStyle: badges.BadgeStyle(
+            badgeColor: Colors.white,
+          ),
+          child: Icon(
+            Icons.shopping_basket_outlined,
+            color: Colors.white,
+          ),
+        ),
+      ),
       title: state.name,
       body: CustomScrollView(
         controller: controller,
