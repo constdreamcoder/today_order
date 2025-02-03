@@ -87,6 +87,15 @@
 
 <br/>
 
+## 🗓️ 일정에 맞춰 진행
+
+[개발 일정표 링크](https://rogue-look-260.notion.site/188c0579c161809d8860c783230c0204?pvs=4)
+
+<img src="https://github.com/user-attachments/assets/2930f3f2-c850-495d-841d-555ae985caf0" align="image" width="100%"/>
+
+<br/>
+<br/>
+
 ## 📌 커밋 메세지 룰입니다. 📌
 
 ✔ Feat : 새로운 기능의 추가
