@@ -76,7 +76,7 @@
 - **Activity Indicator 구현**: 사용자에게 백그라운드 작업이 진행 중임을 알리기 위해 구현
 - **Dio, Retrofit을 활용한 네트워크 통신 중앙화**: `Dio`와 `Retrofit` 패키지를 활용하여 네트워크 요청 통신을 구성하는 로직 모듈화
 - **Dio와 Interceptor를 활용한 토큰 갱신**: `Interceptor`를 활용하여 토큰 만료를 추적하여 갱신하는 로직 구현
-- **Injectable를 활용한 Get_it DI 코드 간소화**: `DI` 코드 간소화를 위해 `Injectable` 패키지 도입
+- **Injectable를 활용한 Get_it DI 코드 자동화**: Get_it `DI` 코드 자동화 하기 위해 `Injectable` 패키지 도입
 - **안전한 토큰 저장을 위해 Secure Storage 도입**: 안전한 토큰 저장을 위해 `Secure Storage` 패키지 도입
 - **Optimistic Response를 활용한 장바구니 UX 개선**: 빠른 장바구니 사용자 경험 개선을 위해 Optimistic Response를 도입
 
