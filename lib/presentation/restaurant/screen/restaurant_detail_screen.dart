@@ -164,6 +164,7 @@ class _RestaurantDetailScreenState
         isFromDetail: true,
         model: model,
         heroKey: model.id,
+        detail: model is RestaurantDetailModel ? model.detail : null,
       ),
     );
   }
