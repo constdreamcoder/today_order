@@ -78,6 +78,7 @@
 - **Dio와 Interceptor를 활용한 토큰 갱신**: `Interceptor`를 활용하여 토큰 만료를 추적하여 갱신하는 로직 구현
 - **Injectable를 활용한 Get_it DI 코드 간소화**: `DI` 코드 간소화를 위해 `Injectable` 패키지 도입
 - **안전한 토큰 저장을 위해 Secure Storage 도입**: 안전한 토큰 저장을 위해 `Secure Storage` 패키지 도입
+- **Optimistic Response를 활용한 장바구니 UX 개선**: 빠른 장바구니 사용자 경험 개선을 위해 Optimistic Response를 도입
 
 <br/>
 
