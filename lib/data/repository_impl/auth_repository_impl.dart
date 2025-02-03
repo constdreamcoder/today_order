@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:injectable/injectable.dart';
 import 'package:today_order/core/di/di_setup.dart';
 import 'package:today_order/core/utils/data_utils.dart';
 import 'package:today_order/data/data_source/remote/auth_api.dart';
@@ -13,6 +14,7 @@ import '../../core/constant/constant.dart';
 import '../../domain/respository/auth_repository.dart';
 import '../data_source/local/secure_storage_dao.dart';
 
+@Singleton(as: AuthRepository)
 class AuthRepositoryImpl implements AuthRepository {
   final AuthApi _authApi;
   final UserApi _userApi;

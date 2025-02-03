@@ -1,3 +1,4 @@
+import 'package:injectable/injectable.dart';
 import 'package:today_order/core/model/cursor_pagination_model.dart';
 
 import 'package:today_order/core/model/pagination_params.dart';
@@ -7,6 +8,7 @@ import 'package:today_order/domain/model/rating_model.dart';
 import '../../domain/respository/restaurant_rating_repository.dart';
 import '../data_source/remote/restaurant_api.dart';
 
+@Singleton(as: RestaurantRatingRepository)
 class RestaurantRatingRepositoryImpl implements RestaurantRatingRepository {
   final RestaurantApi _restaurantApi;
 

@@ -230,6 +230,7 @@ fabric.properties
 !/gradle/wrapper/gradle-wrapper.jar
 
 .env
+*.config.dart
 *.freezed.dart
 *.g.dart
 
