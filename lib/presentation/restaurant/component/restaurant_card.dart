@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:today_order/domain/model/restaurant_detail_model.dart';
 
 import '../../../core/constant/constant.dart';
 import '../../../core/theme/app_colors.dart';
@@ -7,12 +8,14 @@ import '../../../domain/model/restaurant_model.dart';
 class RestaurantCard extends StatelessWidget {
   final bool isFromDetail;
   final RestaurantModel? model;
+  final String? detail;
   final String? heroKey;
 
   const RestaurantCard({
     super.key,
     this.isFromDetail = false,
     this.model,
+    this.detail,
     this.heroKey,
   });
 
@@ -86,6 +89,11 @@ class RestaurantCard extends StatelessWidget {
                   ),
                 ],
               ),
+              if (detail != null && isFromDetail)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  child: Text(detail!),
+                )
             ],
           ),
         )
