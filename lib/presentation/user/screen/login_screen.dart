@@ -44,6 +44,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
                 CustomTextFormField(
                   hintText: '비밀번호를 입력해주세요',
+                  obscureText: true,
                   onChanged: (String value) {
                     password = value;
                   },
