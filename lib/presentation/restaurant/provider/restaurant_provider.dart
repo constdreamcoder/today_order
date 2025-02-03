@@ -1,14 +1,10 @@
 import 'package:debounce_throttle/debounce_throttle.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:today_order/core/di/di_setup.dart';
 import 'package:today_order/core/model/cursor_pagination_model.dart';
 import 'package:today_order/core/model/pagination_params.dart';
-import 'package:today_order/data/data_source/remote/restaurant_api.dart';
-import 'package:today_order/data/repository_impl/restaurant_repository_impl.dart';
 import 'package:today_order/domain/model/restaurant_model.dart';
 
-import '../../../core/respository/base_pagination_repository.dart';
 import '../../../domain/respository/restaurant_repository.dart';
 
 class _RestaurantPaginationInfo {
@@ -25,9 +21,7 @@ class _RestaurantPaginationInfo {
 
 final restaurantProvider =
     NotifierProvider<RestaurantNotifier, CursorPaginationBase>(() {
-  final restaurantApi = RestaurantApi(getIt<Dio>());
-  final repository = RestaurantRepositoryImpl(restaurantApi: restaurantApi);
-  return RestaurantNotifier(repository: repository);
+  return RestaurantNotifier(repository: getIt<RestaurantRepository>());
 });
 
 class RestaurantNotifier extends Notifier<CursorPaginationBase> {

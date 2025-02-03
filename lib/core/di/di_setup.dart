@@ -1,12 +1,11 @@
-import 'package:dio/dio.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:injectable/injectable.dart';
 
-import '../../data/data_source/network/dio_client.dart';
+import 'di_setup.config.dart';
 
 final getIt = GetIt.instance;
 
-void diSetup() {
-  getIt.registerSingleton<FlutterSecureStorage>(const FlutterSecureStorage());
-  getIt.registerSingleton<Dio>(CustomDioClient().getDio);
+@InjectableInit()
+Future<void> configureDependencies() async {
+  await getIt.init(); // 비동기 의존성 초기화 지원
 }

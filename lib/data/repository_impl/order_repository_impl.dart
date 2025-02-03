@@ -1,3 +1,4 @@
+import 'package:injectable/injectable.dart';
 import 'package:today_order/data/data_source/remote/order_api.dart';
 import 'package:today_order/domain/model/order_model.dart';
 import 'package:today_order/domain/model/post_order_body.dart';
@@ -5,6 +6,8 @@ import 'package:today_order/domain/model/shopping_cart_item_model.dart';
 import 'package:today_order/domain/respository/order_repository.dart';
 import 'package:uuid/uuid.dart';
 
+
+@Singleton(as: OrderRepository)
 class OrderRepositoryImpl implements OrderRepository {
   final OrderApi _orderApi;
 

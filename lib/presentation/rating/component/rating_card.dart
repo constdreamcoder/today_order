@@ -6,12 +6,10 @@ import '../../../domain/model/rating_model.dart';
 
 class RatingCard extends StatelessWidget {
   final RatingModel model;
-
   const RatingCard({
     super.key,
     required this.model,
   });
-
   @override
   Widget build(BuildContext context) {
     return Column(
