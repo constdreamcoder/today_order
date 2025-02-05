@@ -72,7 +72,7 @@
 - **BaseURL, API 키 보안**: `BaseURL`과 `API 키`를 안전하게 관리하기 위해 `.env` 에 관련 환경 변수 설정
 - **Throttle를 활용한 Cursor Pagination 성능 개선**: `Pagination` 동작 중 `3초` 내 연속적인 불필요한 네트워크 방지를 위해 `Trottling` 기법 도입
 - **Debounce를 활용한 장바구니 API 중복 호출 방지**: 장바구니 추가/제거 중 일정 시간(`1초`)내 불필요한 중복된 장바구니 추가/제거 API 호출을 방지하기 위해 `Debouncing` 도입
-- **Sekeleton View와 Hero Widget 사용으로 UI/UX 개선**: `Sekeleton View`와 `Hero Widget` 사용하여 데이터 로딩 중 사용자에게 로딩 중이라는 사실을 알리는 사용자 경험을 개선
+- **Skeleton View와 Hero Widget 사용으로 UI/UX 개선**: `Sekeleton View`와 `Hero Widget` 사용하여 데이터 로딩 중 사용자에게 로딩 중이라는 사실을 알리는 사용자 경험을 개선
 - **Activity Indicator 구현**: 사용자에게 백그라운드 작업이 진행 중임을 알리기 위해 구현
 - **Dio, Retrofit을 활용한 네트워크 통신 중앙화**: `Dio`와 `Retrofit` 패키지를 활용하여 네트워크 요청 통신을 구성하는 로직 모듈화
 - **Dio와 Interceptor를 활용한 토큰 갱신**: `Interceptor`를 활용하여 토큰 만료를 추적하여 갱신하는 로직 구현
